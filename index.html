@@ -1151,84 +1151,7 @@ tbody td.qty-c{color:var(--a5)}
   </main>
 </div>
 </div>
-<script>
-// ── CARREGAMENTO DE DADOS ────────────────────────────────────────────────────
-(function(){
-  var _ver = document.currentScript ? 
-    (document.currentScript.getAttribute('data-ver')||Date.now()) : Date.now();
-  
-  function loadData(){
-    var overlay = document.getElementById('loading-overlay');
-    
-    fetch('./dados.json?v=' + _ver)
-      .then(function(r){ 
-        if(!r.ok) throw new Error('Erro ao carregar dados: ' + r.status);
-        return r.json(); 
-      })
-      .then(function(d){
-        // Injetar variáveis globais
-        // Dados principais
-        window.PRODS      = d.PRODS;
-        window.GDAILY     = d.GDAILY;
-        window.ALIQUOTAS  = d.ALIQUOTAS;
-        window.ALL_NCMS   = new Set(d.ALL_NCMS);
-        window.DATES      = d.DATES;
-        window.DL         = d.DL;
-        window.PERIODS    = d.PERIODS;
-        window.DETAIL_S   = d.DETAIL_S;
-        window.DETAIL_I   = d.DETAIL_I;
-        window.DETAIL_PS  = d.DETAIL_PS;
-        window.N_DATES    = d.N_DATES;
-        // Entradas
-        window.PRODS_E    = d.PRODS_E;
-        window.GDAILY_E   = d.GDAILY_E;
-        window.ALIQUOTAS_E = d.ALIQUOTAS_E;
-        window.ALL_NCMS_E  = new Set(d.ALL_NCMS_E);
-        window.DATES_E    = d.DATES_E;
-        window.DL_E       = d.DL_E;
-        window.PERIODS_E  = d.PERIODS_E;
-        window.DETAIL_E   = d.DETAIL_E;
-        window.DETAIL_EN  = d.DETAIL_EN;
-        window.DETAIL_PE  = d.DETAIL_PE;
-        window.GDAILY_EN  = d.GDAILY_EN;
-        window.CFOPS_EN   = d.CFOPS_EN;
-        window.N_DATES_E  = d.N_DATES_E;
-        // Aliases (evita duplicar dados)
-        window.PRODS_EN   = window.PRODS_E;
-        window.DATES_EN   = window.DATES_E;
-        window.DL_EN      = window.DL_E;
-        window.PERIODS_EN = window.PERIODS_E;
-        window.DATES_PS   = window.DATES;
-        window.PERIODS_PS = window.PERIODS;
-        window.DATES_PE   = window.DATES_E;
-        window.PERIODS_PE = window.PERIODS_E;
-        window.PRODS_PS   = window.PRODS;
-        window.PRODS_I    = window.PRODS;
-        
-        // Inicializar dashboard
-        if(typeof initDashboard === 'function') initDashboard();
-      })
-      .catch(function(err){
-        console.error('Erro ao carregar dados:', err);
-        console.error('URL tentada: ./dados.json');
-        if(overlay){
-          overlay.innerHTML = '<div style="color:#ff6b6b;text-align:center;padding:40px">' +
-            '<div style="font-size:2em;margin-bottom:16px">⚠️</div>' +
-            '<div>Erro ao carregar dados</div>' +
-            '<div style="font-size:0.8em;margin-top:8px;opacity:0.7">' + err.message + '</div>' +
-            '<button onclick="location.reload()" style="margin-top:16px;padding:8px 20px;background:#4a9eff;border:none;border-radius:6px;color:#fff;cursor:pointer">Tentar novamente</button>' +
-            '</div>';
-        }
-      });
-  }
-  
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', loadData);
-  } else {
-    loadData();
-  }
-})();
-</script>
+
 function exp(sp,n){var a=new Array(n).fill(0);if(!sp||!sp.length)return a;if(!Array.isArray(sp[0]))return sp;for(var i=0;i<sp.length;i++)a[sp[i][0]]=sp[i][1];return a;}
 function expp(prods,n){
   var fields=['daily','dailyq','dailyicms','dailybase','dailypis','dailycofins'];
@@ -4195,5 +4118,83 @@ function exportRTXlsx(){
   </div>
 </div>
 
+<script>
+// ── CARREGAMENTO DE DADOS ────────────────────────────────────────────────────
+(function(){
+  var _ver = document.currentScript ? 
+    (document.currentScript.getAttribute('data-ver')||Date.now()) : Date.now();
+  
+  function loadData(){
+    var overlay = document.getElementById('loading-overlay');
+    
+    fetch('./dados.json?v=' + _ver)
+      .then(function(r){ 
+        if(!r.ok) throw new Error('Erro ao carregar dados: ' + r.status);
+        return r.json(); 
+      })
+      .then(function(d){
+        // Injetar variáveis globais
+        // Dados principais
+        window.PRODS      = d.PRODS;
+        window.GDAILY     = d.GDAILY;
+        window.ALIQUOTAS  = d.ALIQUOTAS;
+        window.ALL_NCMS   = new Set(d.ALL_NCMS);
+        window.DATES      = d.DATES;
+        window.DL         = d.DL;
+        window.PERIODS    = d.PERIODS;
+        window.DETAIL_S   = d.DETAIL_S;
+        window.DETAIL_I   = d.DETAIL_I;
+        window.DETAIL_PS  = d.DETAIL_PS;
+        window.N_DATES    = d.N_DATES;
+        // Entradas
+        window.PRODS_E    = d.PRODS_E;
+        window.GDAILY_E   = d.GDAILY_E;
+        window.ALIQUOTAS_E = d.ALIQUOTAS_E;
+        window.ALL_NCMS_E  = new Set(d.ALL_NCMS_E);
+        window.DATES_E    = d.DATES_E;
+        window.DL_E       = d.DL_E;
+        window.PERIODS_E  = d.PERIODS_E;
+        window.DETAIL_E   = d.DETAIL_E;
+        window.DETAIL_EN  = d.DETAIL_EN;
+        window.DETAIL_PE  = d.DETAIL_PE;
+        window.GDAILY_EN  = d.GDAILY_EN;
+        window.CFOPS_EN   = d.CFOPS_EN;
+        window.N_DATES_E  = d.N_DATES_E;
+        // Aliases (evita duplicar dados)
+        window.PRODS_EN   = window.PRODS_E;
+        window.DATES_EN   = window.DATES_E;
+        window.DL_EN      = window.DL_E;
+        window.PERIODS_EN = window.PERIODS_E;
+        window.DATES_PS   = window.DATES;
+        window.PERIODS_PS = window.PERIODS;
+        window.DATES_PE   = window.DATES_E;
+        window.PERIODS_PE = window.PERIODS_E;
+        window.PRODS_PS   = window.PRODS;
+        window.PRODS_I    = window.PRODS;
+        
+        // Inicializar dashboard
+        if(typeof initDashboard === 'function') initDashboard();
+      })
+      .catch(function(err){
+        console.error('Erro ao carregar dados:', err);
+        console.error('URL tentada: ./dados.json');
+        if(overlay){
+          overlay.innerHTML = '<div style="color:#ff6b6b;text-align:center;padding:40px">' +
+            '<div style="font-size:2em;margin-bottom:16px">⚠️</div>' +
+            '<div>Erro ao carregar dados</div>' +
+            '<div style="font-size:0.8em;margin-top:8px;opacity:0.7">' + err.message + '</div>' +
+            '<button onclick="location.reload()" style="margin-top:16px;padding:8px 20px;background:#4a9eff;border:none;border-radius:6px;color:#fff;cursor:pointer">Tentar novamente</button>' +
+            '</div>';
+        }
+      });
+  }
+  
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', loadData);
+  } else {
+    loadData();
+  }
+})();
+</script>
 </body>
 </html>
