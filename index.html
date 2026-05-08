@@ -1154,7 +1154,7 @@ tbody td.qty-c{color:var(--a5)}
 </div>
 <script>
 </script>
-<script src="dados/resumo_dados.js"></script>
+<script>document.write('<script src="dados/resumo_dados.js?v='+Date.now()+'">\x3C/script>');</script>
 <script>
 function exp(sp,n){var a=new Array(n).fill(0);if(!sp||!sp.length)return a;if(!Array.isArray(sp[0]))return sp;for(var i=0;i<sp.length;i++)a[sp[i][0]]=sp[i][1];return a;}
 function expp(prods,n){
@@ -2519,7 +2519,7 @@ function renderPSCharts(){
   dc('pstotbar');
   var _selCods_ps=useSel?new Set([sel.cod]):null;
   var _psTotPis=PERIODS_PS.map(function(pm){return +DETAIL_PS.filter(function(r){return String(r[0]).startsWith(pm)&&(!_selCods_ps||_selCods_ps.has(String(r[2])));}).reduce(function(s,r){return s+(+r[9]||0);},0).toFixed(2);});
-  var _psTotCof=PERIODS_PS.map(function(pm){return +DETAIL_PS.filter(function(r){return String(r[0]).startsWith(pm)&&(!_selCods_ps||_selCods_ps.has(String(r[2])));}).reduce(function(s,r){return s+(+r[11]||0);},0).toFixed(2);});
+  var _psTotCof=PERIODS_PS.map(function(pm){return +DETAIL_PS.filter(function(r){return String(r[0]).startsWith(pm)&&(!_selCods_ps||_selCods_ps.has(String(r[2])));}).reduce(function(s,r){return s+(+r[12]||0);},0).toFixed(2);});
   CH['pstotbar']=new Chart(document.getElementById('ps-tot-bar').getContext('2d'),{
     type:'bar',
     data:{labels:PERIODS_PS,datasets:[
@@ -2591,7 +2591,7 @@ function renderPECharts(){
   dc('petotbar');
   var _selCods_pe=useSel?new Set([sel.cod]):null;
   var _peTotPis=PERIODS_PE.map(function(pm){return +DETAIL_PE.filter(function(r){return String(r[0]).startsWith(pm)&&(!_selCods_pe||_selCods_pe.has(String(r[2])));}).reduce(function(s,r){return s+(+r[9]||0);},0).toFixed(2);});
-  var _peTotCof=PERIODS_PE.map(function(pm){return +DETAIL_PE.filter(function(r){return String(r[0]).startsWith(pm)&&(!_selCods_pe||_selCods_pe.has(String(r[2])));}).reduce(function(s,r){return s+(+r[11]||0);},0).toFixed(2);});
+  var _peTotCof=PERIODS_PE.map(function(pm){return +DETAIL_PE.filter(function(r){return String(r[0]).startsWith(pm)&&(!_selCods_pe||_selCods_pe.has(String(r[2])));}).reduce(function(s,r){return s+(+r[12]||0);},0).toFixed(2);});
   CH['petotbar']=new Chart(document.getElementById('pe-tot-bar').getContext('2d'),{
     type:'bar',
     data:{labels:PERIODS_PE,datasets:[
@@ -3078,8 +3078,10 @@ function bindEvents(){
 // ===== RESUMO EXECUTIVO =====
 function _resumoVal(period,key){
   if(typeof RESUMO_DATA!=='undefined'){
-    if(period==='all') return Number((RESUMO_DATA.all&&RESUMO_DATA.all[key])||0);
-    return Number((RESUMO_DATA.by_period&&RESUMO_DATA.by_period[period]&&RESUMO_DATA.by_period[period][key])||0);
+    var obj = null;
+    if(period==='all') obj = RESUMO_DATA.all;
+    else obj = RESUMO_DATA.by_period && RESUMO_DATA.by_period[period];
+    if(obj && Object.prototype.hasOwnProperty.call(obj,key)) return Number(obj[key]||0);
   }
   return null;
 }
@@ -3289,6 +3291,7 @@ function renderPSTable(){
   const qc=(document.getElementById('ps-cod-search').value||'').toUpperCase().trim();
   let prods=spArr(fProdsPS().map(enrichPSProdFromDetail),psS).filter(p=>(!q||_normBusca(p).includes(q))&&(!qc||String(p.cod).toUpperCase().includes(qc)));
   document.getElementById('ps-minfo').textContent=prods.length+' produto'+(prods.length!==1?'s':'')+' · renderização otimizada';
+  window._psProds=prods;
   _renderChunkedTbody('ps-tbody',prods,function(p,i){
     const rk=i<3?`<span class="rnk r${i+1}">${i+1}</span>`:`<span class="rnk">${i+1}</span>`;
     return `<tr data-pidx="${i}" class="ck${psSel&&psSel.p===p.p?' sel':''}" onclick="selPS(this)"><td>${rk}${i+1}</td><td>${p.cod}</td><td>${isInconsistente(p,false,true)?'<span onclick="showInconsistModal(event,\''+getMotivoInconsistente(p,false,true)+'\')" title="Ver inconsistência" style="color:var(--a4);cursor:pointer">&#x26A0;</span>':''}${_rtIconHtml(p.cod,p.ncm)}${trunc(p.p,28)}</td><td class="tr money">${fmt(p.liq)}</td><td class="tr qty-c">${fmtN(p.qty)}</td><td class="tr" style="color:var(--muted)">${p.cfop}</td><td><span class="cst-b cst-${p.cst_pis}">${p.cst_pis}</span></td><td><span class="cst-b cst-${p.cst_cofins}">${p.cst_cofins}</span></td><td class="tr money">${fmt(p.base_pis)}</td><td class="tr money">${p.val_pis>0?fmt(p.val_pis):'—'}</td><td class="tr money">${p.val_cofins>0?fmt(p.val_cofins):'—'}</td></tr>`;
@@ -3299,6 +3302,7 @@ function renderPETable(){
   const qc=(document.getElementById('pe-cod-search').value||'').toUpperCase().trim();
   let prods=spArr(fProdsPE().map(enrichPEProdFromDetail),peS).filter(p=>(!q||_normBusca(p).includes(q))&&(!qc||String(p.cod).toUpperCase().includes(qc)));
   document.getElementById('pe-minfo').textContent=prods.length+' produto'+(prods.length!==1?'s':'')+' · renderização otimizada';
+  window._peProds=prods;
   _renderChunkedTbody('pe-tbody',prods,function(p,i){
     const rk=i<3?`<span class="rnk r${i+1}">${i+1}</span>`:`<span class="rnk">${i+1}</span>`;
     return `<tr data-peidx="${i}" class="ck${peSel&&peSel.p===p.p?' sel':''}" onclick="selPE(this)"><td>${rk}${i+1}</td><td>${p.cod}</td><td>${isInconsistente(p,true,true)?'<span onclick="showInconsistModal(event,\''+getMotivoInconsistente(p,true,true)+'\')" title="Ver inconsistência" style="color:var(--a4);cursor:pointer">&#x26A0;</span>':''}${_rtIconHtml(p.cod,p.ncm)}${trunc(p.p,28)}</td><td class="tr money">${fmt(p.liq)}</td><td class="tr qty-c">${fmtN(p.qty)}</td><td class="tr" style="color:var(--muted)">${p.cfop}</td><td><span class="cst-b cst-${p.cst_pis}">${p.cst_pis}</span></td><td><span class="cst-b cst-${p.cst_cofins}">${p.cst_cofins}</span></td><td class="tr money">${fmt(p.base_pis)}</td><td class="tr money">${p.val_pis>0?fmt(p.val_pis):'—'}</td><td class="tr money">${p.val_cofins>0?fmt(p.val_cofins):'—'}</td></tr>`;
@@ -4369,6 +4373,181 @@ function exportRTXlsx(){
     <div id="rt-modal-body"></div>
   </div>
 </div>
+
+
+<script id="fix-v31-resumo-e-clique-rapido">
+(function(){
+  // V3.1: corrige PIS/COFINS do resumo e deixa o clique na matriz mais rápido.
+  function _num(v){var n=Number(v||0);return isNaN(n)?0:n;}
+  function _txt(v){return String(v==null?'':v);}
+  function _period(){var gp=document.getElementById('global-period');return gp?gp.value:'all';}
+  function _set(id,v){var el=document.getElementById(id);if(el&&typeof fmt==='function')el.textContent=fmt(v);}
+  function _resValV31(period,key){
+    try{
+      if(typeof RESUMO_DATA==='undefined') return null;
+      var obj = period==='all' ? RESUMO_DATA.all : (RESUMO_DATA.by_period && RESUMO_DATA.by_period[period]);
+      if(obj && Object.prototype.hasOwnProperty.call(obj,key)) return _num(obj[key]);
+    }catch(e){}
+    return null;
+  }
+  function _pcFromResumo(period){
+    var pis=_resValV31(period,'pis'), cof=_resValV31(period,'cof');
+    if(pis!==null && cof!==null) return {pis:pis,cof:cof};
+    return null;
+  }
+  var _oldGetPC = window._getPCRecolher;
+  window._getPCRecolher=function(period){
+    var r=_pcFromResumo(period);
+    if(r) return r;
+    try{ if(typeof _oldGetPC==='function') return _oldGetPC(period); }catch(e){}
+    return {pis:0,cof:0};
+  };
+  try{ _getPCRecolher=window._getPCRecolher; }catch(e){}
+
+  function corrigirResumoCards(){
+    var p=_period();
+    var r=_pcFromResumo(p);
+    if(!r) return;
+    _set('res-pis-r',r.pis);
+    _set('res-cof-r',r.cof);
+    var icms=_resValV31(p,'icms')||0;
+    var vendas=_resValV31(p,'vendas')||0;
+    var carga=Math.max(0,icms)+Math.max(0,r.pis)+Math.max(0,r.cof);
+    _set('res-carga-total',carga);
+    var pct=document.getElementById('res-carga-pct');
+    if(pct) pct.textContent=vendas>0?(carga/vendas*100).toFixed(1)+'% sobre vendas':'—';
+  }
+  var _oldRenderResumo=window.renderResumo;
+  window.renderResumo=function(){
+    if(typeof _oldRenderResumo==='function') _oldRenderResumo();
+    corrigirResumoCards();
+  };
+  try{ renderResumo=window.renderResumo; }catch(e){}
+  setTimeout(corrigirResumoCards,300);
+  setTimeout(corrigirResumoCards,1000);
+
+  // Índices rápidos dos detalhes por código: evita varrer tudo quando um produto está selecionado.
+  var _idxPS=null,_idxPE=null,_idxI=null,_idxE=null,_idxS=null,_idxEN=null;
+  function buildIndex(rows){
+    var m={};
+    if(!Array.isArray(rows)) return m;
+    for(var i=0;i<rows.length;i++){
+      var c=String(rows[i][2]);
+      (m[c]||(m[c]=[])).push(rows[i]);
+    }
+    return m;
+  }
+  function idx(tipo){
+    if(tipo==='ps'){ if(!_idxPS && typeof DETAIL_PS!=='undefined') _idxPS=buildIndex(DETAIL_PS); return _idxPS||{}; }
+    if(tipo==='pe'){ if(!_idxPE && typeof DETAIL_PE!=='undefined') _idxPE=buildIndex(DETAIL_PE); return _idxPE||{}; }
+    if(tipo==='i'){ if(!_idxI && typeof DETAIL_I!=='undefined') _idxI=buildIndex(DETAIL_I); return _idxI||{}; }
+    if(tipo==='e'){ if(!_idxE && typeof DETAIL_E!=='undefined') _idxE=buildIndex(DETAIL_E); return _idxE||{}; }
+    if(tipo==='s'){ if(!_idxS && typeof DETAIL_S!=='undefined') _idxS=buildIndex(DETAIL_S); return _idxS||{}; }
+    if(tipo==='en'){ if(!_idxEN && typeof DETAIL_EN!=='undefined') _idxEN=buildIndex(DETAIL_EN); return _idxEN||{}; }
+    return {};
+  }
+  function samePC(a,b){return a&&b&&String(a.cod)===String(b.cod)&&String(a.cfop)===String(b.cfop)&&String(a.cst_pis)===String(b.cst_pis)&&String(a.cst_cofins)===String(b.cst_cofins)&&String(a.ncm)===String(b.ncm);}
+  function sameICMS(a,b){return a&&b&&String(a.cod)===String(b.cod)&&String(a.cfop)===String(b.cfop)&&String(a.cst)===String(b.cst)&&String(a.ncm)===String(b.ncm);}
+  function marcarLinha(tbodyId, idxAttr, idxVal, selected){
+    var tb=document.getElementById(tbodyId); if(!tb) return;
+    tb.querySelectorAll('tr.sel').forEach(function(tr){tr.classList.remove('sel');});
+    if(selected){
+      var tr=tb.querySelector('tr['+idxAttr+'="'+idxVal+'"]');
+      if(tr) tr.classList.add('sel');
+    }
+  }
+
+  function renderPSDetailFast(){
+    var q=(document.getElementById('ps-det-search')?document.getElementById('ps-det-search').value:'').toUpperCase().trim();
+    var base=(psSel&&psSel.cod)?(idx('ps')[String(psSel.cod)]||[]):DETAIL_PS;
+    var rows=base.filter(function(r){
+      if(psP!=='all'&&!String(r[0]).startsWith(psP)) return false;
+      if(psCF!=='all'&&String(r[4])!==String(psCF)) return false;
+      if(psCstPis!=='all'&&String(r[13])!==String(psCstPis)) return false;
+      if(psCstCof!=='all'&&String(r[14])!==String(psCstCof)) return false;
+      if(psSel){
+        if(String(r[2])!==String(psSel.cod)) return false;
+        if(psSel.cfop&&String(r[4])!==String(psSel.cfop)) return false;
+        if(psSel.cst_pis&&String(r[13])!==String(psSel.cst_pis)) return false;
+        if(psSel.cst_cofins&&String(r[14])!==String(psSel.cst_cofins)) return false;
+      }
+      if(q&&String(r[3]).toUpperCase().indexOf(q)<0&&String(r[1]).indexOf(q)<0&&String(r[2]).indexOf(q)<0) return false;
+      return true;
+    });
+    rows=sortDetail(rows,psDS,true);
+    var mi=document.getElementById('ps-det-minfo'); if(mi) mi.textContent=rows.length+' registro'+(rows.length!==1?'s':'');
+    var tag=document.getElementById('ps-det-tag'); if(tag) tag.textContent=psSel?'— '+trunc(psSel.p,16):'';
+    var tb=document.getElementById('ps-det-tbody'); if(!tb) return;
+    tb.innerHTML=rows.slice(0,500).map(function(r){return '<tr><td>'+r[0].slice(8)+'/'+r[0].slice(5,7)+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td title="'+r[3]+'">'+trunc(r[3],22)+'</td><td>'+r[4]+'</td><td class="tr">'+fmtN(r[5])+'</td><td class="tr money">'+fmt(r[6])+'</td><td class="tr money">'+fmt(r[7])+'</td><td class="tr pct-c">'+(Number(r[8])||0)+'%</td><td class="tr money">'+((Number(r[9])||0)>0?fmt(r[9]):'—')+'</td><td class="tr pct-c">'+(Number(r[11])||0)+'%</td><td class="tr money">'+((Number(r[12])||0)>0?fmt(r[12]):'—')+'</td><td>'+r[13]+'</td><td>'+r[14]+'</td></tr>';}).join('');
+  }
+  function renderPEDetailFast(){
+    var q=(document.getElementById('pe-det-search')?document.getElementById('pe-det-search').value:'').toUpperCase().trim();
+    var base=(peSel&&peSel.cod)?(idx('pe')[String(peSel.cod)]||[]):DETAIL_PE;
+    var rows=base.filter(function(r){
+      if(peP!=='all'&&!String(r[0]).startsWith(peP)) return false;
+      if(peCF!=='all'&&String(r[4])!==String(peCF)) return false;
+      if(peCstPis!=='all'&&String(r[13])!==String(peCstPis)) return false;
+      if(peCstCof!=='all'&&String(r[14])!==String(peCstCof)) return false;
+      if(peSel){
+        if(String(r[2])!==String(peSel.cod)) return false;
+        if(peSel.cfop&&String(r[4])!==String(peSel.cfop)) return false;
+        if(peSel.cst_pis&&String(r[13])!==String(peSel.cst_pis)) return false;
+        if(peSel.cst_cofins&&String(r[14])!==String(peSel.cst_cofins)) return false;
+      }
+      if(q&&String(r[3]).toUpperCase().indexOf(q)<0&&String(r[1]).indexOf(q)<0&&String(r[2]).indexOf(q)<0) return false;
+      return true;
+    });
+    rows=sortDetail(rows,peDS,true);
+    var mi=document.getElementById('pe-det-minfo'); if(mi) mi.textContent=rows.length+' registro'+(rows.length!==1?'s':'');
+    var tag=document.getElementById('pe-det-tag'); if(tag) tag.textContent=peSel?'— '+trunc(peSel.p,16):'';
+    var tb=document.getElementById('pe-det-tbody'); if(!tb) return;
+    tb.innerHTML=rows.slice(0,500).map(function(r){return '<tr><td>'+r[0].slice(8)+'/'+r[0].slice(5,7)+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td title="'+r[3]+'">'+trunc(r[3],22)+'</td><td>'+r[4]+'</td><td class="tr">'+fmtN(r[5])+'</td><td class="tr money">'+fmt(r[6])+'</td><td class="tr money">'+fmt(r[7])+'</td><td class="tr pct-c">'+(Number(r[8])||0)+'%</td><td class="tr money">'+((Number(r[9])||0)>0?fmt(r[9]):'—')+'</td><td class="tr pct-c">'+(Number(r[11])||0)+'%</td><td class="tr money">'+((Number(r[12])||0)>0?fmt(r[12]):'—')+'</td><td>'+r[13]+'</td><td>'+r[14]+'</td></tr>';}).join('');
+  }
+  window.renderPSDetail=renderPSDetailFast; try{renderPSDetail=window.renderPSDetail;}catch(e){}
+  window.renderPEDetail=renderPEDetailFast; try{renderPEDetail=window.renderPEDetail;}catch(e){}
+
+  function renderChartsComProdutoPS(){
+    var old=window.fProdsPS;
+    try{ window.fProdsPS=function(){return psSel?[psSel]:old();}; fProdsPS=window.fProdsPS; renderPSCharts(); }
+    finally{ window.fProdsPS=old; try{fProdsPS=old;}catch(e){} }
+  }
+  function renderChartsComProdutoPE(){
+    var old=window.fProdsPE;
+    try{ window.fProdsPE=function(){return peSel?[peSel]:old();}; fProdsPE=window.fProdsPE; renderPECharts(); }
+    finally{ window.fProdsPE=old; try{fProdsPE=old;}catch(e){} }
+  }
+
+  window.selPS=function(el){
+    var i=parseInt(el.getAttribute('data-pidx'));
+    var p=(window._psProds||[])[i]; if(!p) return;
+    psSel=samePC(psSel,p)?null:p;
+    var bn=document.getElementById('ps-sbanner'), sn=document.getElementById('ps-sname');
+    if(bn&&sn){ if(psSel){bn.style.display='flex';sn.textContent=trunc(psSel.p,20);} else bn.style.display='none'; }
+    marcarLinha('ps-tbody','data-pidx',i,!!psSel);
+    setTimeout(function(){ renderChartsComProdutoPS(); renderPSDetailFast(); },0);
+  };
+  try{selPS=window.selPS;}catch(e){}
+
+  window.selPE=function(el){
+    var i=parseInt(el.getAttribute('data-peidx'));
+    var p=(window._peProds||[])[i]; if(!p) return;
+    peSel=samePC(peSel,p)?null:p;
+    var bn=document.getElementById('pe-sbanner'), sn=document.getElementById('pe-sname');
+    if(bn&&sn){ if(peSel){bn.style.display='flex';sn.textContent=trunc(peSel.p,20);} else bn.style.display='none'; }
+    marcarLinha('pe-tbody','data-peidx',i,!!peSel);
+    setTimeout(function(){ renderChartsComProdutoPE(); renderPEDetailFast(); },0);
+  };
+  try{selPE=window.selPE;}catch(e){}
+
+  // Pequena melhoria também nas seleções ICMS: usa a lista já renderizada quando existir e evita redesenhar a tabela inteira no clique.
+  var _oldRenderITable=window.renderITable||renderITable;
+  window.renderITable=function(){ _oldRenderITable(); try{ window._iProds=spArr(fProds('i').map(enrichIProdFromDetail),iS); }catch(e){} };
+  try{renderITable=window.renderITable;}catch(e){}
+  var _oldRenderETable=window.renderETable||renderETable;
+  window.renderETable=function(){ _oldRenderETable(); try{ window._eProds=spArr(fProds_E().map(enrichEProdFromDetail),eS); }catch(e){} };
+  try{renderETable=window.renderETable;}catch(e){}
+})();
+</script>
 
 </body>
 </html>
