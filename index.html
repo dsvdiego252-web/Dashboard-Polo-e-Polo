@@ -5006,5 +5006,163 @@ function exportRTXlsx(){
 })();
 </script>
 
+
+
+<script id="fix-v35-resumo-copia-pcr-e-loading-compras">
+(function(){
+  // V3.5: usa exatamente a mesma regra da aba PIS/Cofins-Recolher para alimentar o Resumo Comercial.
+  // Índices da aba PIS/Cofins-Recolher:
+  // DETAIL_PS/PE[9]  = valor PIS
+  // DETAIL_PS/PE[12] = valor COFINS
+  function n(v){var x=Number(v||0);return isNaN(x)?0:x;}
+  function money(v){return (typeof fmt==='function')?fmt(n(v)):('R$ '+n(v).toFixed(2));}
+  function periodo(){var gp=document.getElementById('global-period');return gp?gp.value:'all';}
+  function setTxt(id,v){var el=document.getElementById(id);if(el)el.textContent=money(v);}
+  function setSub(id,txt){var el=document.getElementById(id);if(el)el.textContent=txt;}
+
+  function resumoObj(p){
+    try{
+      if(typeof RESUMO_DATA==='undefined') return null;
+      return p==='all' ? RESUMO_DATA.all : (RESUMO_DATA.by_period && RESUMO_DATA.by_period[p]);
+    }catch(e){return null;}
+  }
+  function pick(o,keys){
+    if(!o) return null;
+    for(var i=0;i<keys.length;i++){
+      if(Object.prototype.hasOwnProperty.call(o,keys[i])) return n(o[keys[i]]);
+    }
+    return null;
+  }
+  function pcFromResumo(p){
+    var o=resumoObj(p);
+    var pis=pick(o,['pis_recolher','pis','pis_a_recolher','valor_pis_recolher']);
+    var cof=pick(o,['cofins_recolher','cofins','cof','cofins_a_recolher','valor_cofins_recolher']);
+    if(pis!==null || cof!==null) return {pis:n(pis),cof:n(cof)};
+    return null;
+  }
+  function somaDetail(rows,idx,p){
+    var t=0;
+    if(!Array.isArray(rows)) return 0;
+    for(var i=0;i<rows.length;i++){
+      var r=rows[i];
+      if(p!=='all' && !String(r[0]).startsWith(p)) continue;
+      t+=n(r[idx]);
+    }
+    return t;
+  }
+  function pcFromDetail(p){
+    try{
+      if(typeof DETAIL_PS==='undefined' || typeof DETAIL_PE==='undefined') return null;
+      var pisS=somaDetail(DETAIL_PS,9,p);
+      var pisE=somaDetail(DETAIL_PE,9,p);
+      var cofS=somaDetail(DETAIL_PS,12,p);
+      var cofE=somaDetail(DETAIL_PE,12,p);
+      return {pis:+(pisS-pisE).toFixed(2),cof:+(cofS-cofE).toFixed(2)};
+    }catch(e){return null;}
+  }
+  function pcFinal(p){
+    // Se os detalhes já estiverem carregados, eles são a fonte mais confiável,
+    // igual à aba PIS/Cofins-Recolher.
+    var d=pcFromDetail(p);
+    if(d) return d;
+    var r=pcFromResumo(p);
+    if(r) return r;
+    return {pis:0,cof:0};
+  }
+
+  // Substitui a função usada pelo Resumo, mantendo a mesma lógica da aba Recolher.
+  var oldGetPC = window._getPCRecolher || (typeof _getPCRecolher==='function'?_getPCRecolher:null);
+  window._getPCRecolher=function(p){
+    var d=pcFromDetail(p);
+    if(d) return d;
+    var r=pcFromResumo(p);
+    if(r) return r;
+    try{ if(typeof oldGetPC==='function') return oldGetPC(p); }catch(e){}
+    return {pis:0,cof:0};
+  };
+  try{ _getPCRecolher=window._getPCRecolher; }catch(e){}
+
+  function atualizarCardsResumoV35(){
+    var p=periodo();
+    var pc=pcFinal(p);
+    setTxt('res-pis-r',pc.pis);
+    setTxt('res-cof-r',pc.cof);
+
+    var o=resumoObj(p)||{};
+    var icms=pick(o,['icms','icms_recolher']);
+    if(icms===null){ try{ if(typeof _getICMSRecolher==='function') icms=n(_getICMSRecolher(p)); }catch(e){icms=0;} }
+    var vendas=pick(o,['vendas','total_vendas']);
+    if(vendas===null){ try{ if(typeof _getVendasTotal==='function') vendas=n(_getVendasTotal(p)); }catch(e){vendas=0;} }
+    var carga=Math.max(0,n(icms))+Math.max(0,n(pc.pis))+Math.max(0,n(pc.cof));
+    setTxt('res-carga-total',carga);
+    var pct=document.getElementById('res-carga-pct');
+    if(pct) pct.textContent=n(vendas)>0?(carga/n(vendas)*100).toFixed(1)+'% sobre vendas':'—';
+  }
+  window.atualizarCardsResumoV35=atualizarCardsResumoV35;
+
+  var loadingResumoPC=false;
+  function talvezCarregarDetalhePC(){
+    var p=periodo();
+    var r=pcFromResumo(p);
+    var resumoZerado=!r || (Math.abs(n(r.pis))<0.005 && Math.abs(n(r.cof))<0.005);
+    var detalhesJaCarregados=(typeof DETAIL_PS!=='undefined' && typeof DETAIL_PE!=='undefined');
+    if(!resumoZerado || detalhesJaCarregados || loadingResumoPC || typeof ensureFullData!=='function') return;
+
+    loadingResumoPC=true;
+    if(typeof showLoading==='function') showLoading('Carregando PIS/Cofins do Resumo...');
+    ensureFullData().then(function(){
+      atualizarCardsResumoV35();
+      // Recria os gráficos do resumo com PIS/Cofins corretos, agora calculados igual à aba Recolher.
+      try{
+        if(typeof renderResumo==='function' && !window.__v35_rerendering){
+          window.__v35_rerendering=true;
+          renderResumo();
+          window.__v35_rerendering=false;
+        }
+      }catch(e){window.__v35_rerendering=false;}
+    }).finally(function(){
+      loadingResumoPC=false;
+      try{ if(typeof hideLoading==='function') hideLoading(); }catch(e){}
+    });
+  }
+
+  var baseRenderResumo = window.renderResumo || (typeof renderResumo==='function'?renderResumo:null);
+  window.renderResumo=function(){
+    if(typeof baseRenderResumo==='function') baseRenderResumo.apply(this,arguments);
+    atualizarCardsResumoV35();
+    setTimeout(atualizarCardsResumoV35,80);
+    setTimeout(talvezCarregarDetalhePC,120);
+  };
+  try{ renderResumo=window.renderResumo; }catch(e){}
+
+  function iniciar(){
+    atualizarCardsResumoV35();
+    setTimeout(atualizarCardsResumoV35,400);
+    setTimeout(atualizarCardsResumoV35,1200);
+    setTimeout(talvezCarregarDetalhePC,500);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',iniciar);
+  else iniciar();
+  document.addEventListener('change',function(ev){
+    if(ev.target && ev.target.id==='global-period'){
+      setTimeout(function(){atualizarCardsResumoV35();talvezCarregarDetalhePC();},80);
+    }
+  });
+
+  // Loading reforçado para Compras p/ Revenda.
+  var oldSwitchCom = window.switchSubBarComercial || (typeof switchSubBarComercial==='function'?switchSubBarComercial:null);
+  window.switchSubBarComercial=function(action,el){
+    if(action==='tab-entradas' && typeof showLoading==='function') showLoading('Carregando Compras p/ Revenda...');
+    var ret;
+    try{ ret = (typeof oldSwitchCom==='function') ? oldSwitchCom.apply(this,arguments) : undefined; }
+    finally{
+      if(action==='tab-entradas') setTimeout(function(){try{ if(typeof hideLoading==='function') hideLoading(); }catch(e){}},900);
+    }
+    return ret;
+  };
+  try{ switchSubBarComercial=window.switchSubBarComercial; }catch(e){}
+})();
+</script>
+
 </body>
 </html>
