@@ -1344,7 +1344,39 @@ function switchSubBarComercial(action, el){
   switchTab(action === 'tab-saidas' ? 'saidas' : 'entradas', null);
 }
 
+
+// ── CARREGAMENTO LAZY DE DADOS POR ABA ───────────────────────────────────────
+var _abasCarregadas = {};
+function _carregarAba(arquivo, callback) {
+  if (_abasCarregadas[arquivo]) { if(callback) callback(); return; }
+  var s = document.createElement('script');
+  s.src = 'dados/' + arquivo + '?v=' + (window._dadosVer || Date.now());
+  s.onload = function() {
+    _abasCarregadas[arquivo] = true;
+    if(callback) callback();
+  };
+  s.onerror = function() { console.error('Erro ao carregar:', arquivo); };
+  document.head.appendChild(s);
+}
+
 function switchSubBarFiscal(action, el){
+  // Carregamento lazy por aba
+  var _mapaArquivos = {
+    'tab-icms': 'icms.js',
+    'tab-saidas-fiscal': 'icms.js',
+    'tab-pc': 'piscofins.js',
+    'tab-entradas-fiscal': 'entradas.js',
+  };
+  var _arquivo = _mapaArquivos[action];
+  if (_arquivo) {
+    _carregarAba(_arquivo, function() {
+      _switchSubBarFiscalReal(action, el);
+    });
+    return;
+  }
+  _switchSubBarFiscalReal(action, el);
+}
+function _switchSubBarFiscalReal(action, el){
   document.querySelectorAll('#sub-bar-fiscal .sub-tab-btn').forEach(b=>b.classList.remove('active'));
   if(el) el.classList.add('active');
   var tmap = {'tab-entradas-fiscal':'entradas','tab-saidas-fiscal':'saidas','tab-icms':'icms','tab-pc':'pc','tab-rt':'rt'};
