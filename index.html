@@ -998,11 +998,11 @@ tbody td.qty-c{color:var(--a5)}
         <th style="cursor:pointer" onclick="srtPS('cfop')">CFOP</th>
         <th style="cursor:pointer" onclick="srtPS('cst_pis')">CST PIS</th>
         <th style="cursor:pointer" onclick="srtPS('cst_cofins')">CST Cofins</th>
-        <th style="cursor:pointer" onclick="srtPS('ncm')">NCM</th>
         <th class="tr" style="cursor:pointer" onclick="srtPS('base_pis')">Base</th>
         <th class="tr" style="cursor:pointer" onclick="srtPS('val_pis')">PIS</th>
         <th class="tr" style="cursor:pointer" onclick="srtPS('val_cofins')">Cofins</th>
-      </tr></thead><tbody id="ps-tbody"></tbody></table></div>
+      
+        <th style="cursor:pointer">NCM</th></tr></thead><tbody id="ps-tbody"></tbody></table></div>
     </div>
     <div class="matrix-card" style="margin-top:12px">
       <div class="ctitle">Detalhe por Documento <span class="ptag" id="ps-det-tag"></span></div>
@@ -1018,7 +1018,8 @@ tbody td.qty-c{color:var(--a5)}
         <th class="tr">Alíq PIS%</th><th class="tr" onclick="srtPSDet('pis')" style="cursor:pointer">PIS</th>
         <th class="tr">Alíq Cof%</th><th class="tr" onclick="srtPSDet('cof')" style="cursor:pointer">Cofins</th>
         <th>CST PIS</th><th>CST Cof</th>
-      <th onclick="srtPSDet('ncm')" style="cursor:pointer">NCM</th></tr></thead><tbody id="ps-det-tbody"></tbody></table></div>
+      
+        <th style="cursor:pointer">NCM</th></tr></thead><tbody id="ps-det-tbody"></tbody></table></div>
     </div>
   </main>
 </div>
@@ -1106,11 +1107,11 @@ tbody td.qty-c{color:var(--a5)}
         <th style="cursor:pointer" onclick="srtPE('cfop')">CFOP</th>
         <th style="cursor:pointer" onclick="srtPE('cst_pis')">CST PIS</th>
         <th style="cursor:pointer" onclick="srtPE('cst_cofins')">CST Cofins</th>
-        <th style="cursor:pointer" onclick="srtPE('ncm')">NCM</th>
         <th class="tr" style="cursor:pointer" onclick="srtPE('base_pis')">Base</th>
         <th class="tr" style="cursor:pointer" onclick="srtPE('val_pis')">PIS</th>
         <th class="tr" style="cursor:pointer" onclick="srtPE('val_cofins')">Cofins</th>
-      </tr></thead><tbody id="pe-tbody"></tbody></table></div>
+      
+        <th style="cursor:pointer">NCM</th></tr></thead><tbody id="pe-tbody"></tbody></table></div>
     </div>
     <div class="matrix-card" style="margin-top:12px">
       <div class="ctitle">Detalhe por Documento <span class="ptag" id="pe-det-tag"></span></div>
@@ -1126,7 +1127,8 @@ tbody td.qty-c{color:var(--a5)}
         <th class="tr">Alíq PIS%</th><th class="tr" onclick="srtPEDet('pis')" style="cursor:pointer">PIS</th>
         <th class="tr">Alíq Cof%</th><th class="tr" onclick="srtPEDet('cof')" style="cursor:pointer">Cofins</th>
         <th>CST PIS</th><th>CST Cof</th>
-      <th onclick="srtPEDet('ncm')" style="cursor:pointer">NCM</th></tr></thead><tbody id="pe-det-tbody"></tbody></table></div>
+      
+        <th style="cursor:pointer">NCM</th></tr></thead><tbody id="pe-det-tbody"></tbody></table></div>
     </div>
   </main>
 </div>
@@ -2691,10 +2693,10 @@ function renderPSTable(){
       <td class="tr" style="color:var(--muted)">${p.cfop}</td>
       <td><span class="cst-b cst-${p.cst_pis}">${p.cst_pis}</span></td>
       <td><span class="cst-b cst-${p.cst_cofins}">${p.cst_cofins}</span></td>
-      <td style="font-size:11px;color:var(--muted)">${p.ncm||'—'}</td>
       <td class="tr money">${fmt(p.base_pis)}</td>
       <td class="tr money">${p.val_pis>0?fmt(p.val_pis):'—'}</td>
-      <td class="tr money">${p.val_cofins>0?fmt(p.val_cofins):'—'}</td></tr>`;
+      <td class="tr money">${p.val_cofins>0?fmt(p.val_cofins):'—'}</td>
+      <td style="font-size:11px;color:var(--muted)">${p.ncm||'—'}</td></tr>`;
   }).join('');
 }
 function renderPETable(){
@@ -2709,10 +2711,10 @@ function renderPETable(){
       <td class="tr" style="color:var(--muted)">${p.cfop}</td>
       <td><span class="cst-b cst-${p.cst_pis}">${p.cst_pis}</span></td>
       <td><span class="cst-b cst-${p.cst_cofins}">${p.cst_cofins}</span></td>
-      <td style="font-size:11px;color:var(--muted)">${p.ncm||'—'}</td>
       <td class="tr money">${fmt(p.base_pis)}</td>
       <td class="tr money">${p.val_pis>0?fmt(p.val_pis):'—'}</td>
-      <td class="tr money">${p.val_cofins>0?fmt(p.val_cofins):'—'}</td></tr>`;
+      <td class="tr money">${p.val_cofins>0?fmt(p.val_cofins):'—'}</td>
+      <td style="font-size:11px;color:var(--muted)">${p.ncm||'—'}</td></tr>`;
   }).join('');
 }
 
