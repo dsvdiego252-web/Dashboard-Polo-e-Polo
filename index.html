@@ -144,13 +144,10 @@ tbody td.qty-c{color:var(--a5)}
   </div>
   <div class="hbadge" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
     <span id="hdr-inconsist-badge" onclick="switchMainTab('fiscal',document.querySelector('[data-main=fiscal]'));switchSubBarFiscal('tab-icms',document.getElementById('subtab-fiscal-icms'));setTimeout(function(){var btn=document.getElementById('i-inconsist-btn');if(btn&&!iInconsist)toggleIInconsist(btn);},400)" style="display:none;cursor:pointer;background:rgba(240,96,96,.15);border:1px solid rgba(240,96,96,.5);border-radius:20px;padding:3px 10px;font-family:var(--fm);font-size:11px;color:#f06060">⚠️ <span id="hdr-inconsist-count">0</span> inconsistências</span>
+    <span id="hdr-updated" style="font-size:10px;font-family:var(--fm);color:var(--muted);white-space:nowrap" title="Última atualização dos dados"></span>
     <span style="color:var(--muted);font-size:11px;font-family:var(--fm)">Período:</span>
     <select id="global-period" class="fsel" data-event="global-period" style="font-size:11px;padding:3px 6px">
       <option value="all">Todos</option>
-      <option value="2026-01">Jan 2026 ✓</option>
-      <option value="2026-02">Fev 2026 ✓</option>
-      <option value="2026-03">Mar 2026 ✓</option>
-      <option value="2026-04">Abr 2026 🔴</option>
     </select>
   </div>
 </header>
@@ -176,16 +173,16 @@ tbody td.qty-c{color:var(--a5)}
   <div style="padding:16px 14px 0;font-family:var(--fm)">
     <!-- KPI row principal -->
     <div class="kpi-row-4" style="margin-bottom:12px">
-      <div class="kpi-card" style="--kc:#2ecc71"><div class="kico">💰</div><div class="klbl">Total Vendas</div><div class="kval" id="res-vendas">—</div><div class="ksub" id="res-vendas-s">5102 · 5405</div></div>
-      <div class="kpi-card" style="--kc:#5b8dee"><div class="kico">📦</div><div class="klbl">Total Compras</div><div class="kval" id="res-compras">—</div><div class="ksub" id="res-compras-s">1102 · 2102 · 1403 · 2403</div></div>
-      <div class="kpi-card" id="res-margem-card" style="--kc:#e8b84b"><div class="kico">📈</div><div class="klbl">Margem Bruta</div><div class="kval" id="res-margem">—</div><div class="ksub" id="res-margem-s">vendas − compras</div></div>
+      <div class="kpi-card" style="--kc:#2ecc71"><div class="kico">💰</div><div class="klbl">Total Vendas</div><div class="kval" id="res-vendas">—</div><div class="ksub" id="res-vendas-s">5102 · 5405</div><canvas id="spark-vendas" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" style="--kc:#5b8dee"><div class="kico">📦</div><div class="klbl">Total Compras</div><div class="kval" id="res-compras">—</div><div class="ksub" id="res-compras-s">1102 · 2102 · 1403 · 2403</div><canvas id="spark-compras" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" id="res-margem-card" style="--kc:#e8b84b"><div class="kico">📈</div><div class="klbl">Margem Bruta</div><div class="kval" id="res-margem">—</div><div class="ksub" id="res-margem-s">vendas − compras</div><canvas id="spark-margem" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
       <div class="kpi-card" id="res-margem-pct-card" style="--kc:#b48ef5"><div class="kico">%</div><div class="klbl">Margem %</div><div class="kval" id="res-margem-pct">—</div><div class="ksub">sobre vendas</div></div>
     </div>
     <!-- KPI row fiscal -->
     <div class="kpi-row-4" style="margin-bottom:16px">
-      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4)"><div class="kico">🧾</div><div class="klbl">ICMS a Recolher</div><div class="kval" id="res-icms-r">—</div><div class="ksub">déb − créd</div></div>
-      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4)"><div class="kico">📋</div><div class="klbl">PIS a Recolher</div><div class="kval" id="res-pis-r">—</div><div class="ksub">déb − créd</div></div>
-      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4)"><div class="kico">📋</div><div class="klbl">Cofins a Recolher</div><div class="kval" id="res-cof-r">—</div><div class="ksub">déb − créd</div></div>
+      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4)"><div class="kico">🧾</div><div class="klbl">ICMS a Recolher</div><div class="kval" id="res-icms-r">—</div><div class="ksub">déb − créd</div><canvas id="spark-icmsr" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4)"><div class="kico">📋</div><div class="klbl">PIS a Recolher</div><div class="kval" id="res-pis-r">—</div><div class="ksub">déb − créd</div><canvas id="spark-pisr" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4)"><div class="kico">📋</div><div class="klbl">Cofins a Recolher</div><div class="kval" id="res-cof-r">—</div><div class="ksub">déb − créd</div><canvas id="spark-cofinsr" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
       <div class="kpi-card" style="--kc:#f06060;background:rgba(240,96,96,.10);border:1px solid rgba(240,96,96,.4)"><div class="kico">💸</div><div class="klbl">Carga Fiscal</div><div class="kval" id="res-carga-total">—</div><div class="ksub" id="res-carga-pct">ICMS+PIS+Cofins</div></div>
     </div>
     <!-- Gráfico comparativo por período -->
@@ -205,10 +202,6 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">Período</span>
     <select class="fsel" id="en-period-sel" data-event="en-period">
       <option value="all">Todos</option>
-      <option value="2026-01">2026-01</option>
-      <option value="2026-02">2026-02</option>
-      <option value="2026-03">2026-03</option>
-      <option value="2026-04">2026-04</option>
     </select>
     <div class="fsep"></div>
     <span class="fl">CFOP</span>
@@ -284,10 +277,6 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">Período</span>
     <select class="fsel" id="s-period-sel" data-event="s-period">
       <option value="all">Todos</option>
-      <option value="2026-01">2026-01</option>
-      <option value="2026-02">2026-02</option>
-      <option value="2026-03">2026-03</option>
-      <option value="2026-04">2026-04</option>
     </select>
     <div class="fsep"></div>
     <span class="fl">CFOP</span>
@@ -366,10 +355,6 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">Período</span>
     <select class="fsel" id="i-period-sel" data-event="i-period">
       <option value="all">Todos</option>
-      <option value="2026-01">2026-01</option>
-      <option value="2026-02">2026-02</option>
-      <option value="2026-03">2026-03</option>
-      <option value="2026-04">2026-04</option>
     </select>
     <div class="fsep"></div>
     <span class="fl">CFOP</span>
@@ -627,10 +612,6 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">Período</span>
     <select class="fsel" id="e-period-sel" data-event="e-period">
       <option value="all">Todos</option>
-      <option value="2026-01">2026-01</option>
-      <option value="2026-02">2026-02</option>
-      <option value="2026-03">2026-03</option>
-      <option value="2026-04">2026-04</option>
     </select>
     <div class="fsep"></div>
     <span class="fl">CFOP</span>
@@ -928,10 +909,6 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">Período</span>
     <select class="fsel" id="ps-period-sel" data-event="ps-period">
       <option value="all">Todos</option>
-      <option value="2026-01">2026-01</option>
-      <option value="2026-02">2026-02</option>
-      <option value="2026-03">2026-03</option>
-      <option value="2026-04">2026-04</option>
     </select>
     <div class="fsep"></div>
     <span class="fl">CFOP</span>
@@ -1028,10 +1005,6 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">Período</span>
     <select class="fsel" id="pe-period-sel" data-event="pe-period">
       <option value="all">Todos</option>
-      <option value="2026-01">2026-01</option>
-      <option value="2026-02">2026-02</option>
-      <option value="2026-03">2026-03</option>
-      <option value="2026-04">2026-04</option>
     </select>
     <div class="fsep"></div>
     <span class="fl">CFOP</span>
@@ -1159,7 +1132,15 @@ tbody td.qty-c{color:var(--a5)}
 </div>
 <script>
 </script>
-<script>document.write('<script src="dados/resumo_dados.js?v='+Date.now()+'">\x3C/script>');</script>
+<script>
+(function(){
+  // Carrega resumo_dados.js de forma limpa (sem document.write)
+  var s = document.createElement('script');
+  s.src = 'dados/resumo_dados.js?v=' + Date.now();
+  s.onload = function(){ _initDashboard && _initDashboard(); };
+  document.head.appendChild(s);
+})();
+</script>
 <script>
 function exp(sp,n){var a=new Array(n).fill(0);if(!sp||!sp.length)return a;if(!Array.isArray(sp[0]))return sp;for(var i=0;i<sp.length;i++)a[sp[i][0]]=sp[i][1];return a;}
 function expp(prods,n){
@@ -1245,6 +1226,125 @@ const TK={color:'#6b7394',font:{family:'DM Mono',size:10}};
 const hl=(ids,on)=>ids.forEach(id=>{const e=document.getElementById(id);if(e)e.classList[on?'add':'remove']('hl');});
 // STATE
 var _activeMain = 'comercial';
+
+// ── PERÍODOS DINÂMICOS ────────────────────────────────────────────────────────
+var MES_NOMES = ['','Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+var MES_COMPLETOS = ['','Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+function _periodoLabel(p, isGlobal){
+  // p = "2026-04" → "Abr 2026"
+  try {
+    var parts = p.split('-');
+    var ano = parts[0], mes = parseInt(parts[1],10);
+    var nome = MES_NOMES[mes] || p;
+    if(isGlobal) return nome + ' ' + ano;
+    return p;
+  } catch(e){ return p; }
+}
+
+function _isUltimoMes(p, allPeriods){
+  // Marca o último mês com 🔴 (ainda em andamento) e os anteriores com ✓
+  return p === allPeriods[allPeriods.length - 1];
+}
+
+function _populatePeriodSelects(){
+  if(typeof RESUMO_DATA === 'undefined' || !RESUMO_DATA.periods) return;
+  var periods = RESUMO_DATA.periods;
+  var allSelects = [
+    { id: 'global-period', isGlobal: true },
+    { id: 's-period-sel', isGlobal: false },
+    { id: 'en-period-sel', isGlobal: false },
+    { id: 'i-period-sel', isGlobal: false },
+    { id: 'e-period-sel', isGlobal: false },
+    { id: 'ps-period-sel', isGlobal: false },
+    { id: 'pe-period-sel', isGlobal: false }
+  ];
+  allSelects.forEach(function(cfg){
+    var el = document.getElementById(cfg.id);
+    if(!el) return;
+    // Limpar opções anteriores exceto "Todos"
+    while(el.options.length > 1) el.remove(1);
+    periods.forEach(function(p){
+      var opt = document.createElement('option');
+      opt.value = p;
+      if(cfg.isGlobal){
+        var isUltimo = _isUltimoMes(p, periods);
+        opt.textContent = _periodoLabel(p, true) + (isUltimo ? ' 🔴' : ' ✓');
+      } else {
+        opt.textContent = p;
+      }
+      el.appendChild(opt);
+    });
+  });
+}
+
+// ── DATA DE ATUALIZAÇÃO NO HEADER ────────────────────────────────────────────
+function _setUpdatedAt(){
+  var el = document.getElementById('hdr-updated');
+  if(!el) return;
+  try {
+    if(typeof RESUMO_DATA !== 'undefined' && RESUMO_DATA.generated_at){
+      var dt = new Date(RESUMO_DATA.generated_at);
+      var dia = String(dt.getDate()).padStart(2,'0');
+      var mes = String(dt.getMonth()+1).padStart(2,'0');
+      var ano = dt.getFullYear();
+      var h = String(dt.getHours()).padStart(2,'0');
+      var m = String(dt.getMinutes()).padStart(2,'0');
+      el.textContent = '🕐 ' + dia+'/'+mes+'/'+ano + ' ' + h+':'+m;
+      el.title = 'Dados atualizados em ' + dia+'/'+mes+'/'+ano + ' às ' + h+':'+m;
+    }
+  } catch(e){}
+}
+
+// ── SPARKLINES NOS KPI CARDS DO RESUMO ───────────────────────────────────────
+var _sparkCharts = {};
+function _destroySparkline(id){
+  if(_sparkCharts[id]){ try{ _sparkCharts[id].destroy(); }catch(e){} delete _sparkCharts[id]; }
+}
+function _renderSparkline(canvasId, data, color){
+  var canvas = document.getElementById(canvasId);
+  if(!canvas || !data || data.length < 2) return;
+  _destroySparkline(canvasId);
+  var ctx = canvas.getContext('2d');
+  _sparkCharts[canvasId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map(function(_,i){ return i; }),
+      datasets: [{ data: data, borderColor: color, borderWidth: 2,
+        pointRadius: 0, fill: true,
+        backgroundColor: (function(){
+          var g = ctx.createLinearGradient(0,0,0,28);
+          g.addColorStop(0, color.replace(')',',0.35)').replace('rgb','rgba'));
+          g.addColorStop(1, color.replace(')',',0.0)').replace('rgb','rgba'));
+          return g;
+        })(),
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: false, animation: false,
+      plugins: { legend:{display:false}, tooltip:{enabled:false} },
+      scales: { x:{display:false}, y:{display:false} }
+    }
+  });
+}
+function _renderAllSparklines(){
+  if(typeof RESUMO_DATA === 'undefined' || !RESUMO_DATA.by_period) return;
+  var periods = RESUMO_DATA.periods || [];
+  if(periods.length < 2) return;
+  var vendas   = periods.map(function(p){ return (RESUMO_DATA.by_period[p]||{}).vendas||0; });
+  var compras  = periods.map(function(p){ return (RESUMO_DATA.by_period[p]||{}).compras||0; });
+  var icms_r   = periods.map(function(p){ return (RESUMO_DATA.by_period[p]||{}).icms||0; });
+  var pis_r    = periods.map(function(p){ return (RESUMO_DATA.by_period[p]||{}).pis_recolher||0; });
+  var cofins_r = periods.map(function(p){ return (RESUMO_DATA.by_period[p]||{}).cofins_recolher||0; });
+  var margem   = vendas.map(function(v,i){ return v - compras[i]; });
+  _renderSparkline('spark-vendas',   vendas,   'rgb(46,204,113)');
+  _renderSparkline('spark-compras',  compras,  'rgb(91,141,238)');
+  _renderSparkline('spark-margem',   margem,   'rgb(232,184,75)');
+  _renderSparkline('spark-icmsr',    icms_r,   'rgb(240,96,96)');
+  _renderSparkline('spark-pisr',     pis_r,    'rgb(99,179,237)');
+  _renderSparkline('spark-cofinsr',  cofins_r, 'rgb(154,117,234)');
+}
 var _comercialCtx = 'resumo';
 var CFOPS_VENDAS = [5102, 5405];
 var CFOPS_COMPRAS = [1102, 2102, 1403, 2403];
@@ -4833,6 +4933,9 @@ function exportRTXlsx(){
     }
   }
 
+  // Renderizar sparklines após os dados estarem prontos
+  _renderAllSparklines();
+
   // Substitui de verdade a renderização do resumo.
   window.renderResumo = renderResumoFinal;
   try{ renderResumo = window.renderResumo; }catch(e){}
@@ -4855,17 +4958,23 @@ function exportRTXlsx(){
   };
   try{ switchSubBarComercial = window.switchSubBarComercial; }catch(e){}
 
-  function start(){
+  // _initDashboard é chamado pelo onload do resumo_dados.js — sem race condition
+  window._initDashboard = function(){
+    if(window._dashInitDone) return;
+    window._dashInitDone = true;
+    _populatePeriodSelects();
+    _setUpdatedAt();
     renderResumoFinal();
-    // Duas reforçadas curtas para pegar Chart/RESUMO_DATA depois que o navegador terminar de montar.
-    setTimeout(renderResumoFinal, 250);
-    setTimeout(renderResumoFinal, 900);
-  }
+    setTimeout(_renderAllSparklines, 150); // após Chart.js renderizar os dados
+  };
 
+  // Fallback: se o script já carregou antes do onload (cache), dispara direto
   if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', start);
-  }else{
-    start();
+    document.addEventListener('DOMContentLoaded', function(){
+      if(typeof RESUMO_DATA !== 'undefined') window._initDashboard();
+    });
+  } else {
+    if(typeof RESUMO_DATA !== 'undefined') window._initDashboard();
   }
 
   document.addEventListener('change', function(ev){
