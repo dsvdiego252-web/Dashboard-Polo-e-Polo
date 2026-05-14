@@ -173,16 +173,16 @@ tbody td.qty-c{color:var(--a5)}
   <div style="padding:16px 14px 0;font-family:var(--fm)">
     <!-- KPI row principal -->
     <div class="kpi-row-4" style="margin-bottom:12px">
-      <div class="kpi-card" style="--kc:#2ecc71"><div class="kico">💰</div><div class="klbl">Total Vendas</div><div class="kval" id="res-vendas">—</div><div class="ksub" id="res-vendas-s">5102 · 5405</div><canvas id="spark-vendas" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
-      <div class="kpi-card" style="--kc:#5b8dee"><div class="kico">📦</div><div class="klbl">Total Compras</div><div class="kval" id="res-compras">—</div><div class="ksub" id="res-compras-s">1102 · 2102 · 1403 · 2403</div><canvas id="spark-compras" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
-      <div class="kpi-card" id="res-margem-card" style="--kc:#e8b84b"><div class="kico">📈</div><div class="klbl">Margem Bruta</div><div class="kval" id="res-margem">—</div><div class="ksub" id="res-margem-s">vendas − compras</div><canvas id="spark-margem" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" style="--kc:#2ecc71;position:relative"><span id="var-vendas" style="display:none"></span><div class="kico">💰</div><div class="klbl">Total Vendas</div><div class="kval" id="res-vendas">—</div><div class="ksub" id="res-vendas-s">5102 · 5405</div><canvas id="spark-vendas" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" style="--kc:#5b8dee;position:relative"><span id="var-compras" style="display:none"></span><div class="kico">📦</div><div class="klbl">Total Compras</div><div class="kval" id="res-compras">—</div><div class="ksub" id="res-compras-s">1102 · 2102 · 1403 · 2403</div><canvas id="spark-compras" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" id="res-margem-card" style="--kc:#e8b84b;position:relative"><span id="var-margem" style="display:none"></span><div class="kico">📈</div><div class="klbl">Margem Bruta</div><div class="kval" id="res-margem">—</div><div class="ksub" id="res-margem-s">vendas − compras</div><canvas id="spark-margem" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
       <div class="kpi-card" id="res-margem-pct-card" style="--kc:#b48ef5"><div class="kico">%</div><div class="klbl">Margem %</div><div class="kval" id="res-margem-pct">—</div><div class="ksub">sobre vendas</div></div>
     </div>
     <!-- KPI row fiscal -->
     <div class="kpi-row-4" style="margin-bottom:16px">
-      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4)"><div class="kico">🧾</div><div class="klbl">ICMS a Recolher</div><div class="kval" id="res-icms-r">—</div><div class="ksub">déb − créd</div><canvas id="spark-icmsr" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
-      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4)"><div class="kico">📋</div><div class="klbl">PIS a Recolher</div><div class="kval" id="res-pis-r">—</div><div class="ksub">déb − créd</div><canvas id="spark-pisr" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
-      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4)"><div class="kico">📋</div><div class="klbl">Cofins a Recolher</div><div class="kval" id="res-cof-r">—</div><div class="ksub">déb − créd</div><canvas id="spark-cofinsr" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4);position:relative"><span id="var-icms" style="display:none"></span><div class="kico">🧾</div><div class="klbl">ICMS a Recolher</div><div class="kval" id="res-icms-r">—</div><div class="ksub">déb − créd</div><canvas id="spark-icmsr" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4);position:relative"><span id="var-pis" style="display:none"></span><div class="kico">📋</div><div class="klbl">PIS a Recolher</div><div class="kval" id="res-pis-r">—</div><div class="ksub">déb − créd</div><canvas id="spark-pisr" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
+      <div class="kpi-card" style="--kc:#e05555;background:rgba(224,85,85,.10);border:1px solid rgba(224,85,85,.4);position:relative"><span id="var-cofins" style="display:none"></span><div class="kico">📋</div><div class="klbl">Cofins a Recolher</div><div class="kval" id="res-cof-r">—</div><div class="ksub">déb − créd</div><canvas id="spark-cofinsr" width="100" height="28" style="width:100%;height:28px;margin-top:4px;opacity:.7"></canvas></div>
       <div class="kpi-card" style="--kc:#f06060;background:rgba(240,96,96,.10);border:1px solid rgba(240,96,96,.4)"><div class="kico">💸</div><div class="klbl">Carga Fiscal</div><div class="kval" id="res-carga-total">—</div><div class="ksub" id="res-carga-pct">ICMS+PIS+Cofins</div></div>
     </div>
     <!-- Gráfico comparativo por período -->
@@ -380,153 +380,8 @@ tbody td.qty-c{color:var(--a5)}
     <div class="fsep"></div>
     <span class="fl">NCM</span>
     <select class="fsel" id="i-ncm-sel" data-event="i-ncm-sel">
-      <option value="all">Todas</option><option value="02011000">02011000</option>
-<option value="02013000">02013000</option>
-<option value="02023000">02023000</option>
-<option value="02031900">02031900</option>
-<option value="02032200">02032200</option>
-<option value="02032900">02032900</option>
-<option value="02044200">02044200</option>
-<option value="02044300">02044300</option>
-<option value="02062100">02062100</option>
-<option value="02062910">02062910</option>
-<option value="02062990">02062990</option>
-<option value="02063000">02063000</option>
-<option value="02071210">02071210</option>
-<option value="02071220">02071220</option>
-<option value="02071412">02071412</option>
-<option value="02071413">02071413</option>
-<option value="02071419">02071419</option>
-<option value="02071422">02071422</option>
-<option value="02071423">02071423</option>
-<option value="02071432">02071432</option>
-<option value="02071433">02071433</option>
-<option value="02071434">02071434</option>
-<option value="02091011">02091011</option>
-<option value="02101200">02101200</option>
-<option value="02101900">02101900</option>
-<option value="03043100">03043100</option>
-<option value="03048100">03048100</option>
-<option value="04012010">04012010</option>
-<option value="04015021">04015021</option>
-<option value="04029900">04029900</option>
-<option value="04051000">04051000</option>
-<option value="04061010">04061010</option>
-<option value="04061090">04061090</option>
-<option value="04064000">04064000</option>
-<option value="04069010">04069010</option>
-<option value="04069020">04069020</option>
-<option value="04069030">04069030</option>
-<option value="04069090">04069090</option>
-<option value="04089900">04089900</option>
-<option value="05040011">05040011</option>
-<option value="07019000">07019000</option>
-<option value="07020000">07020000</option>
-<option value="07032090">07032090</option>
-<option value="07049000">07049000</option>
-<option value="07052900">07052900</option>
-<option value="07069000">07069000</option>
-<option value="07099919">07099919</option>
-<option value="07102100">07102100</option>
-<option value="07122000">07122000</option>
-<option value="07123900">07123900</option>
-<option value="07133311">07133311</option>
-<option value="07133399">07133399</option>
-<option value="07141000">07141000</option>
-<option value="08031000">08031000</option>
-<option value="08039000">08039000</option>
-<option value="08055000">08055000</option>
-<option value="08062000">08062000</option>
-<option value="08132020">08132020</option>
-<option value="09012100">09012100</option>
-<option value="09041100">09041100</option>
-<option value="09042100">09042100</option>
-<option value="09042200">09042200</option>
-<option value="09061100">09061100</option>
-<option value="09071000">09071000</option>
-<option value="09102000">09102000</option>
-<option value="10063021">10063021</option>
-<option value="11031300">11031300</option>
-<option value="11062000">11062000</option>
-<option value="12119010">12119010</option>
-<option value="12119090">12119090</option>
-<option value="15019000">15019000</option>
-<option value="15079011">15079011</option>
-<option value="15092000">15092000</option>
-<option value="15171000">15171000</option>
-<option value="16010000">16010000</option>
-<option value="16023220">16023220</option>
-<option value="16023230">16023230</option>
-<option value="16023290">16023290</option>
-<option value="16024900">16024900</option>
-<option value="16025000">16025000</option>
-<option value="16029000">16029000</option>
-<option value="17041000">17041000</option>
-<option value="17049010">17049010</option>
-<option value="17049020">17049020</option>
-<option value="17049090">17049090</option>
-<option value="18063110">18063110</option>
-<option value="18063120">18063120</option>
-<option value="18063210">18063210</option>
-<option value="18069000">18069000</option>
-<option value="19012090">19012090</option>
-<option value="19019020">19019020</option>
-<option value="19019090">19019090</option>
-<option value="19021100">19021100</option>
-<option value="19021900">19021900</option>
-<option value="19022000">19022000</option>
-<option value="19023000">19023000</option>
-<option value="19041000">19041000</option>
-<option value="19043000">19043000</option>
-<option value="19053100">19053100</option>
-<option value="19053200">19053200</option>
-<option value="19059020">19059020</option>
-<option value="19059090">19059090</option>
-<option value="20019000">20019000</option>
-<option value="20029000">20029000</option>
-<option value="20031000">20031000</option>
-<option value="20041000">20041000</option>
-<option value="20049000">20049000</option>
-<option value="20052000">20052000</option>
-<option value="20057000">20057000</option>
-<option value="20058000">20058000</option>
-<option value="20059900">20059900</option>
-<option value="20079910">20079910</option>
-<option value="20079990">20079990</option>
-<option value="20081100">20081100</option>
-<option value="20089100">20089100</option>
-<option value="20091900">20091900</option>
-<option value="20096100">20096100</option>
-<option value="21031010">21031010</option>
-<option value="21032010">21032010</option>
-<option value="21032090">21032090</option>
-<option value="21033021">21033021</option>
-<option value="21039011">21039011</option>
-<option value="21039021">21039021</option>
-<option value="21039091">21039091</option>
-<option value="21041011">21041011</option>
-<option value="21069050">21069050</option>
-<option value="21069090">21069090</option>
-<option value="22011000">22011000</option>
-<option value="22021000">22021000</option>
-<option value="22029100">22029100</option>
-<option value="22029900">22029900</option>
-<option value="22030000">22030000</option>
-<option value="22042100">22042100</option>
-<option value="25010011">25010011</option>
-<option value="25010020">25010020</option>
-<option value="25010090">25010090</option>
-<option value="34025000">34025000</option>
-<option value="38089419">38089419</option>
-<option value="39232910">39232910</option>
-<option value="39233090">39233090</option>
-<option value="44029000">44029000</option>
-<option value="48183000">48183000</option>
-<option value="48189090">48189090</option>
-<option value="73239300">73239300</option>
-<option value="76071110">76071110</option>
-<option value="76071190">76071190</option>
-<option value="82055100">82055100</option></select>
+      <option value="all">Todas</option>
+    </select>
     <input type="text" class="finput" id="i-ncm-input" data-event="i-ncm-input" placeholder="Digite NCM..." autocomplete="off">
     <button class="ico-btn" id="i-ncm-clear" data-action="clear-incm">✕</button>
     <span class="ncm-msg" id="i-ncm-msg">NCM inválida</span>
@@ -651,151 +506,8 @@ tbody td.qty-c{color:var(--a5)}
     <div class="fsep"></div>
     <span class="fl">NCM</span>
     <select class="fsel" id="e-ncm-sel" data-event="e-ncm-sel">
-      <option value="all">Todas</option><option value="02011000">02011000</option>
-<option value="02012020">02012020</option>
-<option value="02013000">02013000</option>
-<option value="02023000">02023000</option>
-<option value="02031100">02031100</option>
-<option value="02031900">02031900</option>
-<option value="02032900">02032900</option>
-<option value="02044200">02044200</option>
-<option value="02062200">02062200</option>
-<option value="02062910">02062910</option>
-<option value="02062990">02062990</option>
-<option value="02071100">02071100</option>
-<option value="02071210">02071210</option>
-<option value="02071220">02071220</option>
-<option value="02071400">02071400</option>
-<option value="02071412">02071412</option>
-<option value="02071413">02071413</option>
-<option value="02071422">02071422</option>
-<option value="02071434">02071434</option>
-<option value="02101200">02101200</option>
-<option value="03043100">03043100</option>
-<option value="03048100">03048100</option>
-<option value="04012010">04012010</option>
-<option value="04015021">04015021</option>
-<option value="04029900">04029900</option>
-<option value="04051000">04051000</option>
-<option value="04061010">04061010</option>
-<option value="04061090">04061090</option>
-<option value="04064000">04064000</option>
-<option value="04069010">04069010</option>
-<option value="04069020">04069020</option>
-<option value="04069090">04069090</option>
-<option value="04089900">04089900</option>
-<option value="05040011">05040011</option>
-<option value="05040012">05040012</option>
-<option value="07032090">07032090</option>
-<option value="07049000">07049000</option>
-<option value="07099919">07099919</option>
-<option value="07102100">07102100</option>
-<option value="07122000">07122000</option>
-<option value="07129090">07129090</option>
-<option value="07141000">07141000</option>
-<option value="08031000">08031000</option>
-<option value="08111000">08111000</option>
-<option value="08132020">08132020</option>
-<option value="09012100">09012100</option>
-<option value="09041100">09041100</option>
-<option value="09042100">09042100</option>
-<option value="09042200">09042200</option>
-<option value="09096110">09096110</option>
-<option value="09109900">09109900</option>
-<option value="11010010">11010010</option>
-<option value="11031300">11031300</option>
-<option value="11062000">11062000</option>
-<option value="12119090">12119090</option>
-<option value="15079011">15079011</option>
-<option value="15091000">15091000</option>
-<option value="15171000">15171000</option>
-<option value="16010000">16010000</option>
-<option value="16023220">16023220</option>
-<option value="16023230">16023230</option>
-<option value="16024100">16024100</option>
-<option value="16024900">16024900</option>
-<option value="16025000">16025000</option>
-<option value="17019900">17019900</option>
-<option value="17049020">17049020</option>
-<option value="17049090">17049090</option>
-<option value="18063110">18063110</option>
-<option value="18063120">18063120</option>
-<option value="18063210">18063210</option>
-<option value="18069000">18069000</option>
-<option value="19012000">19012000</option>
-<option value="19012090">19012090</option>
-<option value="19019090">19019090</option>
-<option value="19021100">19021100</option>
-<option value="19021900">19021900</option>
-<option value="19023000">19023000</option>
-<option value="19041000">19041000</option>
-<option value="19043000">19043000</option>
-<option value="19052090">19052090</option>
-<option value="19053100">19053100</option>
-<option value="19053200">19053200</option>
-<option value="19059020">19059020</option>
-<option value="19059090">19059090</option>
-<option value="20019000">20019000</option>
-<option value="20021000">20021000</option>
-<option value="20029090">20029090</option>
-<option value="20031000">20031000</option>
-<option value="20041000">20041000</option>
-<option value="20049000">20049000</option>
-<option value="20052000">20052000</option>
-<option value="20057000">20057000</option>
-<option value="20058000">20058000</option>
-<option value="20079910">20079910</option>
-<option value="20079990">20079990</option>
-<option value="20089100">20089100</option>
-<option value="20091900">20091900</option>
-<option value="20096100">20096100</option>
-<option value="21031010">21031010</option>
-<option value="21032010">21032010</option>
-<option value="21033021">21033021</option>
-<option value="21039011">21039011</option>
-<option value="21039021">21039021</option>
-<option value="21039029">21039029</option>
-<option value="21039091">21039091</option>
-<option value="21041011">21041011</option>
-<option value="21069021">21069021</option>
-<option value="21069040">21069040</option>
-<option value="21069050">21069050</option>
-<option value="21069090">21069090</option>
-<option value="22011000">22011000</option>
-<option value="22021000">22021000</option>
-<option value="22029100">22029100</option>
-<option value="22029900">22029900</option>
-<option value="22030000">22030000</option>
-<option value="22090000">22090000</option>
-<option value="25010020">25010020</option>
-<option value="25010090">25010090</option>
-<option value="32030019">32030019</option>
-<option value="34025000">34025000</option>
-<option value="34029039">34029039</option>
-<option value="35079026">35079026</option>
-<option value="39161000">39161000</option>
-<option value="39232110">39232110</option>
-<option value="39232190">39232190</option>
-<option value="39233090">39233090</option>
-<option value="39239000">39239000</option>
-<option value="39241000">39241000</option>
-<option value="40159000">40159000</option>
-<option value="44029000">44029000</option>
-<option value="44191100">44191100</option>
-<option value="44219100">44219100</option>
-<option value="48025592">48025592</option>
-<option value="48181000">48181000</option>
-<option value="48182000">48182000</option>
-<option value="48183000">48183000</option>
-<option value="48232099">48232099</option>
-<option value="62034200">62034200</option>
-<option value="63071000">63071000</option>
-<option value="64029990">64029990</option>
-<option value="68053090">68053090</option>
-<option value="76071110">76071110</option>
-<option value="82055100">82055100</option>
-<option value="84238200">84238200</option>
-<option value="96039000">96039000</option></select>
+      <option value="all">Todas</option>
+    </select>
     <input type="text" class="finput" id="e-ncm-input" data-event="e-ncm-input" placeholder="Digite NCM..." autocomplete="off">
     <button class="ico-btn" id="e-ncm-clear" data-action="clear-encm">✕</button>
     <span class="ncm-msg" id="e-ncm-msg">NCM inválida</span>
@@ -1245,6 +957,80 @@ function _periodoLabel(p, isGlobal){
 function _isUltimoMes(p, allPeriods){
   // Marca o último mês com 🔴 (ainda em andamento) e os anteriores com ✓
   return p === allPeriods[allPeriods.length - 1];
+}
+
+// ── NCM DINÂMICO POR CONTEXTO ────────────────────────────────────────────────
+function _getNcmsForContext(tab, period, cst){
+  if(typeof NCM_CTX === 'undefined') return [];
+  var ctx = NCM_CTX[tab] || {};
+  var pkey = (period && period !== 'all') ? period : 'all';
+  var pctx = ctx[pkey] || ctx['all'] || {};
+  var ckey = (cst && cst !== 'all') ? cst : 'all';
+  return (pctx[ckey] || pctx['all'] || []).slice().sort();
+}
+function _updateNcmSelect(selId, tab, period, cst, currentVal){
+  var sel = document.getElementById(selId);
+  if(!sel) return;
+  var ncms = _getNcmsForContext(tab, period, cst);
+  var curVal = currentVal || sel.value;
+  while(sel.options.length > 1) sel.remove(1);
+  ncms.forEach(function(n){
+    var opt = document.createElement('option');
+    opt.value = n; opt.textContent = n;
+    sel.appendChild(opt);
+  });
+  if(curVal && curVal !== 'all'){
+    sel.value = ncms.indexOf(curVal) >= 0 ? curVal : 'all';
+  }
+}
+function refreshINcmSel(){ _updateNcmSelect('i-ncm-sel','saidas',iP,iCS,iNC); }
+function refreshENcmSel(){ _updateNcmSelect('e-ncm-sel','entradas',eP,eCS,eNC); }
+function refreshPSNcmSel(){ _updateNcmSelect('ps-ncm-sel','ps',psP,'all'); }
+function refreshPENcmSel(){ _updateNcmSelect('pe-ncm-sel','pe',peP,'all'); }
+
+// ── CACHE + PERFORMANCE PARA CLIQUE EM PRODUTO ───────────────────────────────
+var _filterCache = {};
+function _cKey(tab,p,cf,cs,al,nc){ return [tab,p,cf,cs,al,nc].join('|'); }
+function _invalidateCache(){ _filterCache = {}; }
+function fProdsC(tab){
+  var p,cf,cs,al,nc;
+  if(tab==='i'){p=iP;cf=iCF;cs=iCS;al=iAL;nc=iNC;}
+  else if(tab==='e'){p=eP;cf=eCF;cs=eCS;al=eAL;nc=eNC;}
+  else{return fProds(tab);}
+  var k=_cKey(tab,p,cf,cs,al,nc);
+  if(_filterCache[k]) return _filterCache[k];
+  if(Object.keys(_filterCache).length>30) _filterCache={};
+  var r=fProds(tab);
+  _filterCache[k]=r;
+  return r;
+}
+function selIPFast(el){
+  var idx=parseInt(el.getAttribute('data-idx'));
+  var q=(document.getElementById('i-search').value||'').toUpperCase().trim();
+  var prods=fProdsC('i').filter(function(p){return !q||p.p.includes(q);});
+  var p=prods[idx];if(!p)return;
+  iSel=(iSel&&iSel.cod===p.cod&&iSel.cfop===p.cfop&&iSel.cst===p.cst&&iSel.ncm===p.ncm)?null:p;
+  requestAnimationFrame(function(){
+    renderICharts();
+    requestAnimationFrame(function(){
+      renderITable();
+      requestAnimationFrame(renderIDetail);
+    });
+  });
+}
+function selEPFast(el){
+  var idx=parseInt(el.getAttribute('data-idx'));
+  var q=(document.getElementById('e-search').value||'').toUpperCase().trim();
+  var prods=fProdsC('e').filter(function(p){return !q||p.p.includes(q);});
+  var p=prods[idx];if(!p)return;
+  eSel=(eSel&&eSel.cod===p.cod&&eSel.cfop===p.cfop&&eSel.cst===p.cst&&eSel.ncm===p.ncm)?null:p;
+  requestAnimationFrame(function(){
+    renderECharts();
+    requestAnimationFrame(function(){
+      renderETable();
+      requestAnimationFrame(renderEDetail);
+    });
+  });
 }
 
 function _populatePeriodSelects(){
@@ -1744,10 +1530,10 @@ function selSP(el){
   renderS();
 }
 // ICMS FILTERS
-function onIPeriod(v){iP=v;iSel=null;iCfopClick=null;updIFi();renderI();}
-function setICfop(c,el){iCF=c;iSel=null;iAliqClick=null;iCfopClick=null;document.querySelectorAll('#page-icms .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');updIFi();renderI();}
-function setICst(v){iCS=v;iSel=null;iAliqClick=null;updIFi();renderI();}
-function setIAliq(v){iAL=v;iSel=null;iAliqClick=null;updIFi();renderI();}
+function onIPeriod(v){iP=v;iSel=null;iCfopClick=null;_invalidateCache();refreshINcmSel();updIFi();renderI();}
+function setICfop(c,el){iCF=c;iSel=null;iAliqClick=null;iCfopClick=null;document.querySelectorAll('#page-icms .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');_invalidateCache();refreshINcmSel();updIFi();renderI();}
+function setICst(v){iCS=v;iSel=null;iAliqClick=null;_invalidateCache();refreshINcmSel();updIFi();renderI();}
+function setIAliq(v){iAL=v;iSel=null;iAliqClick=null;_invalidateCache();refreshINcmSel();updIFi();renderI();}
 function setINcmSel(v){iNC=v;iNCR='';document.getElementById('ncm-input').value='';document.getElementById('ncm-input').classList.remove('err');document.getElementById('ncm-msg').classList.remove('show');document.getElementById('ncm-clear').classList.remove('show');iSel=null;updIFi();renderI();}
 function onNcmInput(val){
   const v=val.trim();iNCR=v;
@@ -1942,7 +1728,7 @@ function renderITable(){
     const sel=iSel&&iSel.cod===p.cod&&iSel.cfop===p.cfop&&iSel.cst===p.cst&&iSel.ncm===p.ncm;
     const rk=i<3?`<span class="rnk r${i+1}">${i+1}</span>`:`<span class="rnk">${i+1}</span>`;
     const cb=`<span class="cst-b cst-${p.cst}">CST ${p.cst}</span>`;
-    return `<tr class="ck${sel?' sel':''}" data-idx="${i}" onclick="selIP(this)"><td>${i+1}</td><td>${p.cod}</td><td>${rk}${isInconsistente(p,false,false)?'<span onclick="showInconsistModal(event,\''+getMotivoInconsistente(p,false,false)+'\')" title="Ver inconsistência" style="color:var(--a4);cursor:pointer">&#x26A0;</span>':''}${isAviso(p)?'<span onclick="showInconsistModal(event,\''+getMotivoAviso(p)+'\')" title="Ver aviso" style="color:var(--a2);cursor:pointer">&#x2139;</span>':''}${_rtIconHtml(p.cod,p.ncm)}${trunc(p.p,24)}${_getVariacao(p.cod,p.cfop,p.cst,p.liq)}</td><td class="tr money">${fmt(p.liq)}</td><td class="tr qty-c">${fmtN(p.qty)}</td><td class="tr" style="color:var(--muted);font-family:var(--fm)">${p.cfop}</td><td class="tr">${cb}</td><td class="tr ncm-c">${p.ncm}</td><td class="tr money">${fmt(p.base)}</td><td class="tr pct-c">${p.aliq>0?p.aliq.toFixed(1)+'%':'\u2014'}</td><td class="tr money">${p.icms>0?fmt(p.icms):'\u2014'}</td></tr>`;
+    return `<tr class="ck${sel?' sel':''}" data-idx="${i}" onclick="selIPFast(this)"><td>${i+1}</td><td>${p.cod}</td><td>${rk}${isInconsistente(p,false,false)?'<span onclick="showInconsistModal(event,\''+getMotivoInconsistente(p,false,false)+'\')" title="Ver inconsistência" style="color:var(--a4);cursor:pointer">&#x26A0;</span>':''}${isAviso(p)?'<span onclick="showInconsistModal(event,\''+getMotivoAviso(p)+'\')" title="Ver aviso" style="color:var(--a2);cursor:pointer">&#x2139;</span>':''}${_rtIconHtml(p.cod,p.ncm)}${trunc(p.p,24)}${_getVariacao(p.cod,p.cfop,p.cst,p.liq)}</td><td class="tr money">${fmt(p.liq)}</td><td class="tr qty-c">${fmtN(p.qty)}</td><td class="tr" style="color:var(--muted);font-family:var(--fm)">${p.cfop}</td><td class="tr">${cb}</td><td class="tr ncm-c">${p.ncm}</td><td class="tr money">${fmt(p.base)}</td><td class="tr pct-c">${p.aliq>0?p.aliq.toFixed(1)+'%':'\u2014'}</td><td class="tr money">${p.icms>0?fmt(p.icms):'\u2014'}</td></tr>`;
   }).join('');
 }
 function selIP(el){
@@ -2024,10 +1810,10 @@ function renderSNoPie(){
 }
 // ICMS-ENTRADAS
 function fProds_E(){let p=PRODS_E.slice();if(eP!=='all'){var ixE=DATES_E.map(function(d,i){return d.startsWith(eP)?i:-1;}).filter(function(i){return i>=0;});p=p.map(function(pr){var liq=+(ixE.reduce(function(s,i){return s+(pr.daily[i]||0);},0).toFixed(2));var qty=+(ixE.reduce(function(s,i){return s+(pr.dailyq[i]||0);},0).toFixed(2));var base=+(ixE.reduce(function(s,i){return s+(pr.dailybase?pr.dailybase[i]||0:0);},0).toFixed(2));var icms=+(ixE.reduce(function(s,i){return s+(pr.dailyicms?pr.dailyicms[i]||0:0);},0).toFixed(2));if(liq<=0&&icms<=0) return null;var nr={};for(var k in pr)nr[k]=pr[k];nr.liq=liq;nr.qty=qty;nr.base=base;nr.icms=icms;nr.aliq=base>0?parseFloat((icms/base*100).toFixed(2)):pr.aliq;return nr;}).filter(Boolean);}if(eCF!=='all')p=p.filter(x=>x.cfop==eCF);if(eCfopClick!==null)p=p.filter(x=>x.cfop==eCfopClick);if(eInconsist)p=p.filter(x=>isInconsistente(x,true,false));if(eAviso)p=p.filter(x=>isAviso(x));if(eCS!=='all')p=p.filter(x=>x.cst==parseInt(eCS));if(eAL!=='all')p=p.filter(x=>x.aliq==parseFloat(eAL));if(eAliqClick!==null)p=p.filter(x=>x.aliq===eAliqClick);if(eNC==='none')return[];if(eNC!=='all')p=p.filter(x=>x.ncm===eNC);return p;}
-function onEPeriod(v){eP=v;eSel=null;eCfopClick=null;updEFi();renderE();}
+function onEPeriod(v){eP=v;eSel=null;eCfopClick=null;_invalidateCache();refreshENcmSel();updEFi();renderE();}
 function setECfop(c,el){eCF=c;eSel=null;eAliqClick=null;eCfopClick=null;document.querySelectorAll('#page-icmse .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');updEFi();renderE();}
-function setECst(v){eCS=v;eSel=null;eAliqClick=null;updEFi();renderE();}
-function setEAliq(v){eAL=v;eSel=null;eAliqClick=null;updEFi();renderE();}
+function setECst(v){eCS=v;eSel=null;eAliqClick=null;_invalidateCache();refreshENcmSel();updEFi();renderE();}
+function setEAliq(v){eAL=v;eSel=null;eAliqClick=null;_invalidateCache();refreshENcmSel();updEFi();renderE();}
 function setENcmSel(v){eNC=v;eNCR='';document.getElementById('e-ncm-input').value='';document.getElementById('e-ncm-input').classList.remove('err');document.getElementById('e-ncm-msg').classList.remove('show');document.getElementById('e-ncm-clear').classList.remove('show');eSel=null;updEFi();renderE();}
 function onEncmInput(val){const v=val.trim();eNCR=v;const inp=document.getElementById('e-ncm-input'),msg=document.getElementById('e-ncm-msg'),clr=document.getElementById('e-ncm-clear');if(!v){eNC='all';inp.classList.remove('err');msg.classList.remove('show');clr.classList.remove('show');document.getElementById('e-ncm-sel').value='all';eSel=null;updEFi();renderE();return;}clr.classList.add('show');if(ALL_NCMS_E.has(v)){eNC=v;inp.classList.remove('err');msg.classList.remove('show');document.getElementById('e-ncm-sel').value=v;}else{eNC='none';inp.classList.add('err');msg.classList.add('show');document.getElementById('e-ncm-sel').value='all';}eSel=null;updEFi();renderE();}
 function clearEncm(){eNC='all';eNCR='';const inp=document.getElementById('e-ncm-input');inp.value='';inp.classList.remove('err');document.getElementById('e-ncm-msg').classList.remove('show');document.getElementById('e-ncm-clear').classList.remove('show');document.getElementById('e-ncm-sel').value='all';eSel=null;updEFi();renderE();}
@@ -2109,7 +1895,7 @@ function renderETable(){
   window._eProds=prods;document.getElementById('e-tbody').innerHTML=prods.map((p,i)=>{
     const sel=eSel&&eSel.cod===p.cod&&eSel.cfop===p.cfop&&eSel.cst===p.cst&&eSel.ncm===p.ncm;
     const rk=i<3?'<span class="rnk r'+(i+1)+'">'+(i+1)+'</span>':'<span class="rnk">'+(i+1)+'</span>';
-    return '<tr class="ck'+(sel?' sel':'')+' " data-idx="'+i+'" onclick="selEP(this)"><td>'+(i+1)+'</td><td>'+p.cod+'</td><td>'+(isInconsistente(p,true,false)?'<span onclick="showInconsistModal(event,\''+getMotivoInconsistente(p,true,false)+'\')" title="Ver inconsistência" style="color:var(--a4);cursor:pointer">&#x26A0;</span>':'')+(isAviso(p)?'<span onclick="showInconsistModal(event,\''+getMotivoAviso(p)+'\')" title="Ver aviso" style="color:var(--a2);cursor:pointer">&#x2139;</span>':'')+_rtIconHtml(p.cod,p.ncm)+trunc(p.p,30)+'</td><td class="tr money">'+fmt(p.liq)+'</td><td class="tr qty-c">'+fmtN(p.qty)+'</td><td>'+p.cfop+'</td><td><span class="cst-b cst-'+p.cst+'">CST '+p.cst+'</span></td><td>'+p.ncm+'</td><td class="tr">'+fmt(p.base)+'</td><td class="tr">'+p.aliq+'%</td><td class="tr money">'+fmt(p.icms)+'</td></tr>';
+    return '<tr class="ck'+(sel?' sel':'')+' " data-idx="'+i+'" onclick="selEPFast(this)"><td>'+(i+1)+'</td><td>'+p.cod+'</td><td>'+(isInconsistente(p,true,false)?'<span onclick="showInconsistModal(event,\''+getMotivoInconsistente(p,true,false)+'\')" title="Ver inconsistência" style="color:var(--a4);cursor:pointer">&#x26A0;</span>':'')+(isAviso(p)?'<span onclick="showInconsistModal(event,\''+getMotivoAviso(p)+'\')" title="Ver aviso" style="color:var(--a2);cursor:pointer">&#x2139;</span>':'')+_rtIconHtml(p.cod,p.ncm)+trunc(p.p,30)+'</td><td class="tr money">'+fmt(p.liq)+'</td><td class="tr qty-c">'+fmtN(p.qty)+'</td><td>'+p.cfop+'</td><td><span class="cst-b cst-'+p.cst+'">CST '+p.cst+'</span></td><td>'+p.ncm+'</td><td class="tr">'+fmt(p.base)+'</td><td class="tr">'+p.aliq+'%</td><td class="tr money">'+fmt(p.icms)+'</td></tr>';
   }).join('');
 }
 function selEP(el){
@@ -4257,6 +4043,45 @@ wrapToggle('toggleIInconsist');wrapToggle('toggleEInconsist');wrapToggle('toggle
 <!-- PAGE: REFORMA TRIBUTÁRIA                                   -->
 <!-- ══════════════════════════════════════════════════════════ -->
 <div class="page" id="page-rt">
+  <!-- KPI cards interativos Reforma Tributária -->
+  <div id="rt-kpi-row" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;padding:12px 14px 8px">
+    <div class="kpi-card" id="rt-kpi-all" style="--kc:#b48ef5;cursor:pointer;position:relative" onclick="setRTTipo('all',this)" title="Ver todos">
+      <div class="kico">📊</div><div class="klbl">Total Produtos</div>
+      <div class="kval" id="rt-k-total" style="font-size:22px">—</div>
+      <div class="ksub">cruzamento TIPI × NCM</div>
+    </div>
+    <div class="kpi-card" id="rt-kpi-zero" style="--kc:#3ecf8e;cursor:pointer;position:relative" onclick="setRTTipo('zero',this)" title="Filtrar alíquota zero">
+      <div class="kico">✅</div><div class="klbl">Alíquota Zero</div>
+      <div class="kval" id="rt-k-zero" style="font-size:22px;color:#3ecf8e">—</div>
+      <div class="ksub">isentos IBS/CBS</div>
+    </div>
+    <div class="kpi-card" id="rt-kpi-red" style="--kc:#e8b84b;cursor:pointer;position:relative" onclick="setRTTipo('reduzida',this)" title="Filtrar alíquota reduzida">
+      <div class="kico">📉</div><div class="klbl">Alíquota Reduzida</div>
+      <div class="kval" id="rt-k-red" style="font-size:22px;color:#e8b84b">—</div>
+      <div class="ksub">redução 60%</div>
+    </div>
+    <div class="kpi-card" id="rt-kpi-plena" style="--kc:#f06060;cursor:pointer;position:relative" onclick="setRTTipo('integral',this)" title="Filtrar tributação integral">
+      <div class="kico">💰</div><div class="klbl">Tributação Plena</div>
+      <div class="kval" id="rt-k-plena" style="font-size:22px;color:#f06060">—</div>
+      <div class="ksub">IBS 0,1% + CBS 0,9%</div>
+    </div>
+    <div class="kpi-card" id="rt-kpi-mono" style="--kc:#5b8dee;cursor:pointer;position:relative" onclick="setRTTipo('mono',this)" title="Filtrar monofásica">
+      <div class="kico">🔄</div><div class="klbl">Monofásica</div>
+      <div class="kval" id="rt-k-mono" style="font-size:22px;color:#5b8dee">—</div>
+      <div class="ksub">tributação monofásica</div>
+    </div>
+  </div>
+  <!-- Gráficos interativos -->
+  <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;padding:0 14px 10px">
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px">
+      <div style="font-size:10px;color:var(--muted);font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Distribuição</div>
+      <div style="height:160px;position:relative"><canvas id="rt-donut-chart"></canvas></div>
+    </div>
+    <div style="background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px">
+      <div style="font-size:10px;color:var(--muted);font-family:var(--fm);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Top Categorias — <span id="rt-chart-label">Todos</span></div>
+      <div style="height:160px;position:relative"><canvas id="rt-bar-chart"></canvas></div>
+    </div>
+  </div>
   <!-- Linha 1 de filtros -->
   <div class="filter-bar" style="flex-wrap:wrap;gap:6px">
     <span class="fl">Cód.</span>
@@ -4350,10 +4175,121 @@ function _rtPopulateSelects(prods){
 }
 
 var _rtAllProds=null;
+var _rtFiltroTipo='all'; // filtro ativo por tipo de tributação via KPI card
+var _rtCharts={donut:null,bar:null};
+
+function setRTTipo(tipo, el){
+  _rtFiltroTipo = (_rtFiltroTipo===tipo && tipo!=='all') ? 'all' : tipo;
+  // Destacar card ativo
+  ['rt-kpi-all','rt-kpi-zero','rt-kpi-red','rt-kpi-plena','rt-kpi-mono'].forEach(function(id){
+    var c=document.getElementById(id);
+    if(c) c.style.outline='none';
+  });
+  if(el && _rtFiltroTipo!=='all') el.style.outline='2px solid var(--accent)';
+  // Sincronizar select de tipo
+  var sel=document.getElementById('rt-tipo-sel');
+  if(sel){
+    if(_rtFiltroTipo==='all') sel.value='all';
+    else if(_rtFiltroTipo==='zero'){
+      var opt=[...sel.options].find(o=>o.value.toLowerCase().includes('zero'));
+      if(opt) sel.value=opt.value;
+    } else if(_rtFiltroTipo==='reduzida'){
+      var opt=[...sel.options].find(o=>o.value.toLowerCase().includes('reduz'));
+      if(opt) sel.value=opt.value;
+    } else if(_rtFiltroTipo==='integral'){
+      var opt=[...sel.options].find(o=>o.value.toLowerCase().includes('integral'));
+      if(opt) sel.value=opt.value;
+    } else if(_rtFiltroTipo==='mono'){
+      var opt=[...sel.options].find(o=>o.value.toLowerCase().includes('monof'));
+      if(opt) sel.value=opt.value;
+    }
+  }
+  renderRT();
+}
+
+function _renderRTKpis(allProds){
+  var total=allProds.length;
+  var zero=allProds.filter(function(p){return p.tipo&&p.tipo.toLowerCase().includes('zero');}).length;
+  var red=allProds.filter(function(p){return p.tipo&&p.tipo.toLowerCase().includes('reduz');}).length;
+  var plena=allProds.filter(function(p){return p.tipo&&p.tipo.toLowerCase().includes('integral');}).length;
+  var mono=allProds.filter(function(p){return p.tipo&&p.tipo.toLowerCase().includes('monof');}).length;
+  var set_val=function(id,v){var el=document.getElementById(id);if(el)el.textContent=v.toLocaleString('pt-BR');};
+  set_val('rt-k-total',total); set_val('rt-k-zero',zero);
+  set_val('rt-k-red',red); set_val('rt-k-plena',plena); set_val('rt-k-mono',mono);
+  _renderRTCharts(allProds,zero,red,plena,mono);
+}
+
+function _renderRTCharts(allProds,zero,red,plena,mono){
+  // Donut
+  var donutCanvas=document.getElementById('rt-donut-chart');
+  if(donutCanvas){
+    if(_rtCharts.donut){try{_rtCharts.donut.destroy();}catch(e){}}
+    var TTP2={backgroundColor:'#1a1e2a',borderColor:'#2d3350',borderWidth:1,titleColor:'#e8b84b',bodyColor:'#e8eaf0'};
+    _rtCharts.donut=new Chart(donutCanvas.getContext('2d'),{
+      type:'doughnut',
+      data:{labels:['Zero','Reduzida','Integral','Monofásica'],
+        datasets:[{data:[zero,red,plena,mono],
+          backgroundColor:['rgba(62,207,142,.8)','rgba(232,184,75,.8)','rgba(240,96,96,.8)','rgba(91,141,238,.8)'],
+          borderColor:'#13161e',borderWidth:2,hoverOffset:6}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'60%',
+        onClick:function(_,elems){
+          if(!elems||!elems.length)return;
+          var idx=elems[0].index;
+          var tipos=['zero','reduzida','integral','mono'];
+          var cards=['rt-kpi-zero','rt-kpi-red','rt-kpi-plena','rt-kpi-mono'];
+          setRTTipo(tipos[idx],document.getElementById(cards[idx]));
+        },
+        plugins:{legend:{display:true,position:'bottom',labels:{color:'#6b7394',font:{family:'DM Mono',size:9},boxWidth:8,padding:8}},
+          tooltip:{...TTP2,callbacks:{label:function(i){return ' '+i.label+': '+i.raw.toLocaleString('pt-BR');}}}}}
+    });
+  }
+  // Bar por situação (top 6 categorias)
+  var barCanvas=document.getElementById('rt-bar-chart');
+  if(barCanvas){
+    if(_rtCharts.bar){try{_rtCharts.bar.destroy();}catch(e){}}
+    // Agrupar por Produto/Situação
+    var catMap={};
+    allProds.forEach(function(p){
+      var sit=(p.situacao||'Outros').split(/[\-–]/)[0].trim().substring(0,30);
+      if(!catMap[sit]) catMap[sit]={zero:0,red:0,plena:0,mono:0};
+      if(p.tipo&&p.tipo.toLowerCase().includes('zero')) catMap[sit].zero++;
+      else if(p.tipo&&p.tipo.toLowerCase().includes('reduz')) catMap[sit].red++;
+      else if(p.tipo&&p.tipo.toLowerCase().includes('monof')) catMap[sit].mono++;
+      else catMap[sit].plena++;
+    });
+    var cats=Object.keys(catMap).sort(function(a,b){
+      var ta=(catMap[a].zero+catMap[a].red+catMap[a].plena+catMap[a].mono);
+      var tb=(catMap[b].zero+catMap[b].red+catMap[b].plena+catMap[b].mono);
+      return tb-ta;
+    }).slice(0,7);
+    var GR2={color:'rgba(35,40,64,.6)'};
+    var TK2={color:'#6b7394',font:{family:'DM Mono',size:9}};
+    var TTP3={backgroundColor:'#1a1e2a',borderColor:'#2d3350',borderWidth:1,titleColor:'#e8b84b',bodyColor:'#e8eaf0'};
+    _rtCharts.bar=new Chart(barCanvas.getContext('2d'),{
+      type:'bar',
+      data:{labels:cats,datasets:[
+        {label:'Zero',data:cats.map(function(c){return catMap[c].zero;}),backgroundColor:'rgba(62,207,142,.7)',borderRadius:3},
+        {label:'Reduzida',data:cats.map(function(c){return catMap[c].red;}),backgroundColor:'rgba(232,184,75,.7)',borderRadius:3},
+        {label:'Integral',data:cats.map(function(c){return catMap[c].plena;}),backgroundColor:'rgba(240,96,96,.7)',borderRadius:3},
+        {label:'Monofásica',data:cats.map(function(c){return catMap[c].mono;}),backgroundColor:'rgba(91,141,238,.7)',borderRadius:3},
+      ]},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:true,labels:{color:'#6b7394',font:{family:'DM Mono',size:9},boxWidth:8}},tooltip:{...TTP3}},
+        scales:{x:{grid:GR2,ticks:{...TK2,maxRotation:30}},y:{grid:GR2,ticks:TK2}}}
+    });
+  }
+  // Atualizar label do gráfico de barras
+  var lbl=document.getElementById('rt-chart-label');
+  if(lbl){
+    var tipos2={'all':'Todos','zero':'Alíquota Zero','reduzida':'Alíquota Reduzida','integral':'Tributação Integral','mono':'Monofásica'};
+    lbl.textContent=tipos2[_rtFiltroTipo]||'Todos';
+  }
+}
 
 function renderRT(){
   if(!_rtAllProds) _rtAllProds=_rtBuildProdMap();
   _rtPopulateSelects(_rtAllProds);
+  _renderRTKpis(_rtAllProds);
 
   var qCod=(document.getElementById('rt-cod-search').value||'').toUpperCase().trim();
   var qNome=(document.getElementById('rt-nome-search').value||'').toUpperCase().trim();
@@ -4367,6 +4303,14 @@ function renderRT(){
     if(fClass!=='all'&&p.cClass!==fClass) return false;
     if(fCst!=='all'&&p.cst!==fCst) return false;
     if(fTipo!=='all'&&p.tipo!==fTipo) return false;
+    // Filtro por KPI card clicado
+    if(_rtFiltroTipo!=='all'){
+      var t=(p.tipo||'').toLowerCase();
+      if(_rtFiltroTipo==='zero'&&!t.includes('zero')) return false;
+      if(_rtFiltroTipo==='reduzida'&&!t.includes('reduz')) return false;
+      if(_rtFiltroTipo==='integral'&&!t.includes('integral')) return false;
+      if(_rtFiltroTipo==='mono'&&!t.includes('monof')) return false;
+    }
     return true;
   });
 
@@ -4933,8 +4877,9 @@ function exportRTXlsx(){
     }
   }
 
-  // Renderizar sparklines após os dados estarem prontos
+  // Renderizar sparklines e variações após os dados estarem prontos
   _renderAllSparklines();
+  _renderTodasVariacoes();
 
   // Substitui de verdade a renderização do resumo.
   window.renderResumo = renderResumoFinal;
@@ -4959,13 +4904,57 @@ function exportRTXlsx(){
   try{ switchSubBarComercial = window.switchSubBarComercial; }catch(e){}
 
   // _initDashboard é chamado pelo onload do resumo_dados.js — sem race condition
-  window._initDashboard = function(){
+  
+// ── BADGE DE VARIAÇÃO MENSAL NOS KPI CARDS ───────────────────────────────────
+function _getVariacaoMensal(campo){
+  if(typeof RESUMO_DATA === 'undefined' || !RESUMO_DATA.periods || RESUMO_DATA.periods.length < 2) return null;
+  var periods = RESUMO_DATA.periods;
+  var ultimo = periods[periods.length-1];
+  var penultimo = periods[periods.length-2];
+  var vAtual = (RESUMO_DATA.by_period[ultimo]||{})[campo] || 0;
+  var vAnt   = (RESUMO_DATA.by_period[penultimo]||{})[campo] || 0;
+  if(vAnt === 0) return null;
+  var pct = ((vAtual - vAnt) / vAnt) * 100;
+  return { pct: pct, up: pct > 0 };
+}
+function _renderVariacaoBadge(elId, campo, invertido){
+  // invertido=true: aumento é ruim (ex: ICMS a Recolher)
+  var el = document.getElementById(elId);
+  if(!el) return;
+  var v = _getVariacaoMensal(campo);
+  if(!v){ el.textContent=''; el.style.display='none'; return; }
+  var isGood = invertido ? !v.up : v.up;
+  var arrow = v.up ? '▲' : '▼';
+  var color = isGood ? '#3ecf8e' : '#f06060';
+  var bg    = isGood ? 'rgba(62,207,142,.12)' : 'rgba(240,96,96,.12)';
+  var border= isGood ? 'rgba(62,207,142,.3)'  : 'rgba(240,96,96,.3)';
+  el.textContent = arrow + ' ' + Math.abs(v.pct).toFixed(1) + '%';
+  el.style.cssText = 'display:inline-block;font-family:var(--fm);font-size:10px;' +
+    'border-radius:8px;padding:2px 7px;color:'+color+';background:'+bg+';' +
+    'border:1px solid '+border+';position:absolute;top:10px;right:10px;';
+  el.style.display = 'inline-block';
+}
+function _renderTodasVariacoes(){
+  _renderVariacaoBadge('var-vendas','vendas',false);
+  _renderVariacaoBadge('var-compras','compras',true);
+  _renderVariacaoBadge('var-margem','vendas',false); // aproximação pela margem
+  _renderVariacaoBadge('var-icms','icms',true);
+  _renderVariacaoBadge('var-pis','pis_recolher',true);
+  _renderVariacaoBadge('var-cofins','cofins_recolher',true);
+}
+window._initDashboard = function(){
     if(window._dashInitDone) return;
     window._dashInitDone = true;
     _populatePeriodSelects();
     _setUpdatedAt();
     renderResumoFinal();
-    setTimeout(_renderAllSparklines, 150); // após Chart.js renderizar os dados
+    setTimeout(_renderAllSparklines, 150);
+    setTimeout(function(){
+      refreshINcmSel();
+      refreshENcmSel();
+      refreshPSNcmSel();
+      refreshPENcmSel();
+    }, 200);
   };
 
   // Fallback: se o script já carregou antes do onload (cache), dispara direto
