@@ -961,12 +961,48 @@ function _isUltimoMes(p, allPeriods){
 
 // ── NCM DINÂMICO POR CONTEXTO ────────────────────────────────────────────────
 function _getNcmsForContext(tab, period, cst){
-  if(typeof NCM_CTX === 'undefined') return [];
-  var ctx = NCM_CTX[tab] || {};
-  var pkey = (period && period !== 'all') ? period : 'all';
-  var pctx = ctx[pkey] || ctx['all'] || {};
-  var ckey = (cst && cst !== 'all') ? cst : 'all';
-  return (pctx[ckey] || pctx['all'] || []).slice().sort();
+  // Tenta NCM_CTX primeiro (gerado pelo Python atualizado)
+  if(typeof NCM_CTX !== 'undefined'){
+    var ctx = NCM_CTX[tab] || {};
+    var pkey = (period && period !== 'all') ? period : 'all';
+    var pctx = ctx[pkey] || ctx['all'] || {};
+    var ckey = (cst && cst !== 'all') ? cst : 'all';
+    var r = pctx[ckey] || pctx['all'] || [];
+    if(r.length > 0) return r.slice().sort();
+  }
+  // Fallback: extrai NCMs dinamicamente dos produtos filtrados (funciona sem NCM_CTX)
+  var srcProds;
+  if(tab==='saidas')       srcProds = typeof PRODS   !== 'undefined' ? PRODS   : [];
+  else if(tab==='entradas') srcProds = typeof PRODS_E !== 'undefined' ? PRODS_E : [];
+  else if(tab==='ps')       srcProds = typeof PRODS_PS!== 'undefined' ? PRODS_PS: [];
+  else if(tab==='pe')       srcProds = typeof PRODS_PE!== 'undefined' ? PRODS_PE: [];
+  else srcProds = [];
+  
+  // Filtrar por período se necessário
+  var prodsFiltered = srcProds;
+  if(period && period !== 'all' && typeof DATES !== 'undefined'){
+    var datesArr = tab==='entradas'?DATES_E:(tab==='ps'?DATES_PS:(tab==='pe'?DATES_PE:DATES));
+    if(datesArr){
+      var ix = datesArr.map(function(d,i){ return d.startsWith(period)?i:-1; }).filter(function(i){ return i>=0; });
+      prodsFiltered = srcProds.filter(function(p){
+        return ix.some(function(i){ return (p.daily&&p.daily[i])||0 > 0; });
+      });
+    }
+  }
+  
+  // Filtrar por CST
+  var prodsCst = prodsFiltered;
+  if(cst && cst !== 'all'){
+    prodsCst = prodsFiltered.filter(function(p){
+      var pCst = tab==='saidas'||tab==='entradas' ? String(p.cst||'') : String(p.cst_pis||p.cst||'');
+      return pCst === String(cst);
+    });
+  }
+  
+  // Extrair NCMs únicas
+  var ncmSet = {};
+  prodsCst.forEach(function(p){ if(p.ncm) ncmSet[p.ncm]=1; });
+  return Object.keys(ncmSet).sort();
 }
 function _updateNcmSelect(selId, tab, period, cst, currentVal){
   var sel = document.getElementById(selId);
@@ -2686,8 +2722,8 @@ function renderPEDetail(){
 }
 
 // ─── Filter handlers PIS/Cofins ───
-function onPSPeriod(v){psP=v;renderPS();}
-function onPEPeriod(v){peP=v;renderPE();}
+function onPSPeriod(v){psP=v;_invalidateCache();refreshPSNcmSel();renderPS();}
+function onPEPeriod(v){peP=v;_invalidateCache();refreshPENcmSel();renderPE();}
 function setPSCfop(c,el){psCF=c;document.querySelectorAll('#sub-pc-saidas .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');renderPS();}
 function setPECfop(c,el){peCF=c;document.querySelectorAll('#sub-pc-entradas .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');renderPE();}
 
@@ -2949,10 +2985,10 @@ function bindEvents(){
     else if(ev==='pe-cfop'){var cfv=e.target.value;setPECfop(cfv==='all'?'all':parseInt(cfv),e.target);}
     else if(ev==='ps-period')onPSPeriod(e.target.value);
     else if(ev==='pe-period')onPEPeriod(e.target.value);
-    else if(ev==='ps-cst-pis'){psCstPis=e.target.value;renderPS();}
-    else if(ev==='ps-cst-cofins'){psCstCof=e.target.value;renderPS();}
-    else if(ev==='pe-cst-pis'){peCstPis=e.target.value;renderPE();}
-    else if(ev==='pe-cst-cofins'){peCstCof=e.target.value;renderPE();}
+    else if(ev==='ps-cst-pis'){psCstPis=e.target.value;_invalidateCache();refreshPSNcmSel();renderPS();}
+    else if(ev==='ps-cst-cofins'){psCstCof=e.target.value;_invalidateCache();refreshPSNcmSel();renderPS();}
+    else if(ev==='pe-cst-pis'){peCstPis=e.target.value;_invalidateCache();refreshPENcmSel();renderPE();}
+    else if(ev==='pe-cst-cofins'){peCstCof=e.target.value;_invalidateCache();refreshPENcmSel();renderPE();}
     else if(ev==='ps-search'||ev==='ps-cod-search')renderPSTable();
     else if(ev==='pe-search'||ev==='pe-cod-search')renderPETable();
     else if(ev==='ps-det-search')renderPSDetail();
@@ -4150,6 +4186,53 @@ function _rtColor(tipo){
 }
 
 function _rtBuildProdMap(){
+  // Preferir RT_DATA (gerado pelo Python com TIPI completa) se disponível
+  if(typeof RT_DATA !== 'undefined' && RT_DATA.length > 0){
+    // RT_DATA: [ncm, descTipi, situacao, cClassTrib, cst, tipo, reducao, ibs, cbs, legal]
+    // Cruzar com produtos do estoque (DETAIL_S/DETAIL_I) para ter nome e código
+    var codNcm={}, codNome={}, codLiq={};
+    DETAIL_I.forEach(function(r){
+      var c=String(r[2]), n=String(r[11]||'').replace(/\D/g,'');
+      if(n&&!codNcm[c]) codNcm[c]=n;
+      if(!codNome[c]) codNome[c]=String(r[3]);
+    });
+    if(typeof DETAIL_E!=='undefined') DETAIL_E.forEach(function(r){
+      var c=String(r[2]), n=String(r[11]||'').replace(/\D/g,'');
+      if(n&&!codNcm[c]) codNcm[c]=n;
+      if(!codNome[c]) codNome[c]=String(r[3]);
+    });
+    DETAIL_S.forEach(function(r){
+      var cod=String(r[2]);
+      codLiq[cod]=(codLiq[cod]||0)+(+r[6]||0);
+      if(!codNome[cod]) codNome[cod]=String(r[3]);
+    });
+    // Construir mapa NCM→dados da RT_DATA
+    var ncmToRT={};
+    RT_DATA.forEach(function(row){
+      var ncm=String(row[0]).replace(/\D/g,'').padStart(8,'0');
+      ncmToRT[ncm]=row;
+    });
+    // Gerar lista de produtos com cruzamento
+    var prods=[];
+    Object.keys(codNcm).forEach(function(cod){
+      var ncm=codNcm[cod]||'';
+      var rt=ncmToRT[ncm]||null;
+      prods.push({
+        cod:cod, nome:codNome[cod]||cod, liq:codLiq[cod]||0, ncm:ncm,
+        descTipi: rt?String(rt[1]):'—',
+        situacao: rt?String(rt[2]):'—',
+        cClass:   rt?String(rt[3]):'—',
+        cst:      rt?String(rt[4]):'—',
+        tipo:     rt?String(rt[5]):(ncm?'Não encontrado na TIPI':'Sem NCM'),
+        red:      rt?String(rt[6]):'—',
+        ibs:      rt?rt[7]:'—',
+        cbs:      rt?rt[8]:'—',
+        legal:    rt?String(rt[9]):'—'
+      });
+    });
+    return prods.sort(function(a,b){return b.liq-a.liq;});
+  }
+  // Fallback: usar TIPI_DATA inline
   var codNcm={};
   DETAIL_I.forEach(function(r){ var c=String(r[2]),n=String(r[11]||'').replace(/\D/g,''); if(n&&!codNcm[c]) codNcm[c]=n; });
   if(typeof DETAIL_E!=='undefined') DETAIL_E.forEach(function(r){ var c=String(r[2]),n=String(r[11]||'').replace(/\D/g,''); if(n&&!codNcm[c]) codNcm[c]=n; });
@@ -4218,7 +4301,8 @@ function setRTTipo(tipo, el){
       if(opt) sel.value=opt.value;
     }
   }
-  renderRT();
+  // setTimeout garante que _rtFiltroTipo foi atualizado
+  setTimeout(renderRT, 0);
 }
 
 function _renderRTKpis(allProds){
