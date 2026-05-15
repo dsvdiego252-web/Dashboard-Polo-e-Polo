@@ -826,7 +826,15 @@ function ensureFullData(){
     var s=document.createElement('script');
     s.src='dados/dashboard_dados.js?v='+encodeURIComponent((typeof RESUMO_DATA!=='undefined'&&RESUMO_DATA.generated_at)?RESUMO_DATA.generated_at:(window.__DASH_DATA_VERSION||'3'));
     s.onload=function(){
-      try{_expandAllData();_rebuildColorMaps();_fullDataLoaded=true;if(typeof atualizarCardsResumoPCTV32==='function')atualizarCardsResumoPCTV32();hideLoading();resolve(true);}catch(e){console.error(e);reject(e);}
+      try{_expandAllData();_rebuildColorMaps();_fullDataLoaded=true;if(typeof atualizarCardsResumoPCTV32==='function')atualizarCardsResumoPCTV32();hideLoading();
+        // Inicializar filtros dinâmicos APÓS dados estarem disponíveis
+        setTimeout(function(){
+          if(typeof refreshAllFiltersI  ==='function') refreshAllFiltersI();
+          if(typeof refreshAllFiltersE  ==='function') refreshAllFiltersE();
+          if(typeof refreshAllFiltersPS ==='function') refreshAllFiltersPS();
+          if(typeof refreshAllFiltersPE ==='function') refreshAllFiltersPE();
+        }, 100);
+        resolve(true);}catch(e){console.error(e);reject(e);}
     };
     s.onerror=function(){alert('Não consegui carregar dados/dashboard_dados.js');reject(new Error('Falha ao carregar dados'));};
     document.head.appendChild(s);
@@ -1005,6 +1013,7 @@ function refreshICstSel(){
 function refreshIAliqSel(){
   var vals = _getValoresUnicos('saidas','aliq',iP,iCS,iCF);
   _updateFilterSelect('i-aliq-sel', vals, iAL, _lblAliq);
+  refreshINcmSel();
 }
 function refreshICfopSel(){
   var vals = _getValoresUnicos('saidas','cfop',iP,'all','all');
@@ -1020,6 +1029,7 @@ function refreshECstSel(){
 function refreshEAliqSel(){
   var vals = _getValoresUnicos('entradas','aliq',eP,eCS,eCF);
   _updateFilterSelect('e-aliq-sel', vals, eAL, _lblAliq);
+  refreshENcmSel();
 }
 function refreshECfopSel(){
   var vals = _getValoresUnicos('entradas','cfop',eP,'all','all');
@@ -1032,7 +1042,7 @@ function refreshPSCstSel(){
   _updateFilterSelect('ps-cst-pis-sel', pVals, psCstPis, function(v){ return 'CST '+String(v).padStart(2,'0'); });
   var cVals = _getValoresUnicos('ps','cst_cof',psP,'all',psCF);
   _updateFilterSelect('ps-cst-cofins-sel', cVals, psCstCof, function(v){ return 'CST '+String(v).padStart(2,'0'); });
-  refreshPSNcmSel();
+  refreshPSNcmSel(); // já estava
 }
 function refreshPSCfopSel(){
   var vals = _getValoresUnicos('ps','cfop',psP,'all','all');
@@ -5106,13 +5116,8 @@ window._initDashboard = function(){
     _setUpdatedAt();
     renderResumoFinal();
     setTimeout(_renderAllSparklines, 150);
-    // Inicializar todos os filtros dinâmicos após dados carregados
-    setTimeout(function(){
-      refreshAllFiltersI();   // ICMS Saídas: CFOP → CST → Aliq → NCM
-      refreshAllFiltersE();   // ICMS Entradas: CFOP → CST → Aliq → NCM
-      refreshAllFiltersPS();  // PIS/Cofins Saídas: CFOP → CST → NCM
-      refreshAllFiltersPE();  // PIS/Cofins Entradas: CFOP → CST → NCM
-    }, 300);
+    // Filtros dinâmicos são inicializados no onload do dashboard_dados.js
+    // para garantir que DETAIL_I/E/PS/PE já estão disponíveis
   };
 
   // Fallback: se o script já carregou antes do onload (cache), dispara direto
