@@ -208,13 +208,6 @@ tbody td.qty-c{color:var(--a5)}
     
     <select class="fsel cfop-sel" id="en-cfop-sel" data-event="en-cfop">
       <option value="all">Todos</option>
-      <option value="1102">1102</option>
-      <option value="1403">1403</option>
-      <option value="1908">1908</option>
-      <option value="1910">1910</option>
-      <option value="2102">2102</option>
-      <option value="2403">2403</option>
-      <option value="2910">2910</option>
     </select>
       </div>
   <main>
@@ -282,10 +275,6 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">CFOP</span>
     <select class="fsel cfop-sel" id="s-cfop-sel" data-event="s-cfop">
       <option value="all">Todos</option>
-      <option value="5102">5102</option>
-      <option value="5202">5202</option>
-      <option value="5405">5405</option>
-      <option value="5929">5929</option>
     </select>
         <div class="fsep"></div>
     <span class="fl" id="s-fi">Todos</span>
@@ -360,23 +349,16 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">CFOP</span>
     <select class="fsel cfop-sel" id="i-cfop-sel" data-event="i-cfop">
       <option value="all">Todos</option>
-      <option value="5102">5102</option>
-      <option value="5202">5202</option>
-      <option value="5405">5405</option>
-      <option value="5929">5929</option>
     </select>    <div class="fsep"></div>
     <span class="fl">CST</span>
-    <select class="fsel" data-event="i-cst">
-      <option value="all">Todos</option><option value="000">CST 000</option>
-<option value="040">CST 040</option>
-<option value="060">CST 060</option></select>
+    <select class="fsel" id="i-cst-sel" data-event="i-cst">
+      <option value="all">Todos</option>
+    </select>
     <div class="fsep"></div>
     <span class="fl">Alíquota</span>
     <select class="fsel" id="i-aliq-sel" data-event="i-aliq">
-      <option value="all">Todas</option><option value="4.5">4,5%</option>
-<option value="7.0">7%</option>
-<option value="18.0">18%</option>
-<option value="25.0">25%</option></select>
+      <option value="all">Todos</option>
+    </select>
     <div class="fsep"></div>
     <span class="fl">NCM</span>
     <select class="fsel" id="i-ncm-sel" data-event="i-ncm-sel">
@@ -472,37 +454,16 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">CFOP</span>
     <select class="fsel cfop-sel" id="e-cfop-sel" data-event="e-cfop">
       <option value="all">Todos</option>
-      <option value="1102">1102</option>
-      <option value="1403">1403</option>
-      <option value="1908">1908</option>
-      <option value="1910">1910</option>
-      <option value="2102">2102</option>
-      <option value="2403">2403</option>
-      <option value="2910">2910</option>
     </select>    <div class="fsep"></div>
     <span class="fl">CST</span>
-    <select class="fsel" data-event="e-cst">
-      <option value="all">Todos</option><option value="000">CST 000</option>
-<option value="010">CST 010</option>
-<option value="020">CST 020</option>
-<option value="040">CST 040</option>
-<option value="051">CST 051</option>
-<option value="060">CST 060</option>
-<option value="070">CST 070</option>
-<option value="090">CST 090</option>
-<option value="100">CST 100</option>
-<option value="101">CST 101</option>
-<option value="260">CST 260</option>
-<option value="500">CST 500</option>
-<option value="560">CST 560</option>
-<option value="570">CST 570</option></select>
+    <select class="fsel" id="e-cst-sel" data-event="e-cst">
+      <option value="all">Todos</option>
+    </select>
     <div class="fsep"></div>
     <span class="fl">Alíquota</span>
     <select class="fsel" id="e-aliq-sel" data-event="e-aliq">
-      <option value="all">Todas</option><option value="4.0">4%</option>
-<option value="7.0">7%</option>
-<option value="12.0">12%</option>
-<option value="18.0">18%</option></select>
+      <option value="all">Todos</option>
+    </select>
     <div class="fsep"></div>
     <span class="fl">NCM</span>
     <select class="fsel" id="e-ncm-sel" data-event="e-ncm-sel">
@@ -626,23 +587,17 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">CFOP</span>
     <select class="fsel cfop-sel" id="ps-cfop-sel" data-event="ps-cfop">
       <option value="all">Todos</option>
-      <option value="5102">5102</option>
-      <option value="5202">5202</option>
-      <option value="5405">5405</option>
-      <option value="5929">5929</option>
     </select>
         <div class="fsep"></div>
     <span class="fl">CST PIS</span>
-    <select class="fsel" data-event="ps-cst-pis">
-      <option value="all">Todos</option><option value="001">CST 001</option>
-<option value="006">CST 006</option>
-<option value="007">CST 007</option></select>
+    <select class="fsel" id="ps-cst-pis-sel" data-event="ps-cst-pis">
+      <option value="all">Todos</option>
+    </select>
     <div class="fsep"></div>
     <span class="fl">CST Cofins</span>
-    <select class="fsel" data-event="ps-cst-cofins">
-      <option value="all">Todos</option><option value="001">CST 001</option>
-<option value="006">CST 006</option>
-<option value="007">CST 007</option></select>
+    <select class="fsel" id="ps-cst-cofins-sel" data-event="ps-cst-cofins">
+      <option value="all">Todos</option>
+    </select>
   </div>
   <div class="fi-bar"><span class="filabel" id="ps-fi">Todos os filtros</span></div>
     <div style="padding:0 28px 8px;display:flex;align-items:center;gap:8px">
@@ -722,32 +677,17 @@ tbody td.qty-c{color:var(--a5)}
     <span class="fl">CFOP</span>
     <select class="fsel cfop-sel" id="pe-cfop-sel" data-event="pe-cfop">
       <option value="all">Todos</option>
-      <option value="1102">1102</option>
-      <option value="1403">1403</option>
-      <option value="1908">1908</option>
-      <option value="1910">1910</option>
-      <option value="2102">2102</option>
-      <option value="2403">2403</option>
-      <option value="2910">2910</option>
     </select>
         <div class="fsep"></div>
     <span class="fl">CST PIS</span>
-    <select class="fsel" data-event="pe-cst-pis">
-      <option value="all">Todos</option><option value="050">CST 050</option>
-<option value="071">CST 071</option>
-<option value="073">CST 073</option>
-<option value="074">CST 074</option>
-<option value="098">CST 098</option>
-<option value="099">CST 099</option></select>
+    <select class="fsel" id="pe-cst-pis-sel" data-event="pe-cst-pis">
+      <option value="all">Todos</option>
+    </select>
     <div class="fsep"></div>
     <span class="fl">CST Cofins</span>
-    <select class="fsel" data-event="pe-cst-cofins">
-      <option value="all">Todos</option><option value="050">CST 050</option>
-<option value="071">CST 071</option>
-<option value="073">CST 073</option>
-<option value="074">CST 074</option>
-<option value="098">CST 098</option>
-<option value="099">CST 099</option></select>
+    <select class="fsel" id="pe-cst-cofins-sel" data-event="pe-cst-cofins">
+      <option value="all">Todos</option>
+    </select>
   </div>
   <div class="fi-bar"><span class="filabel" id="pe-fi">Todos os filtros</span></div>
     <div style="padding:0 28px 8px;display:flex;align-items:center;gap:8px">
@@ -960,69 +900,163 @@ function _isUltimoMes(p, allPeriods){
 }
 
 // ── NCM DINÂMICO POR CONTEXTO ────────────────────────────────────────────────
-function _getNcmsForContext(tab, period, cst){
-  // Tenta NCM_CTX primeiro (gerado pelo Python atualizado)
+// ── EXTRAÇÃO DINÂMICA DE FILTROS DOS DETAIL ARRAYS ──────────────────────────
+// Usa os arrays DETAIL_* que contêm todas as transações com todos os campos
+// DETAIL_I: [data, doc, cod, nome, cfop, qty, liq, base, aliq, icms, cst, ncm]
+// DETAIL_E: [data, doc, cod, nome, cfop, qty, liq, base, aliq, icms, cst, ncm]
+// DETAIL_PS/PE: [data, doc, cod, nome, cfop, qty, liq, base, aliq_pis, pis, cst_pis, ncm, aliq_cof, cof, cst_cof]
+
+function _getDetailArr(tab){
+  if(tab==='saidas')       return typeof DETAIL_I  !=='undefined' ? DETAIL_I  : [];
+  if(tab==='entradas')     return typeof DETAIL_E  !=='undefined' ? DETAIL_E  : [];
+  if(tab==='ps')           return typeof DETAIL_PS !=='undefined' ? DETAIL_PS : [];
+  if(tab==='pe')           return typeof DETAIL_PE !=='undefined' ? DETAIL_PE : [];
+  return [];
+}
+
+function _filterDetail(rows, period, cst, cfop, tab){
+  // Índices: 0=data, 4=cfop, 10=cst(icms)/10=cst_pis(ps/pe), 11=ncm
+  var isPisCof = (tab==='ps'||tab==='pe');
+  return rows.filter(function(r){
+    if(period && period!=='all' && !String(r[0]).startsWith(period)) return false;
+    if(cfop   && cfop!=='all'   && String(r[4])!==String(cfop))      return false;
+    if(cst    && cst!=='all'){
+      var rCst = isPisCof ? String(r[10]||'').padStart(2,'0') : String(r[10]||'').padStart(3,'0');
+      if(rCst !== String(cst)) return false;
+    }
+    return true;
+  });
+}
+
+function _getNcmsForContext(tab, period, cst, cfop){
+  // Tenta NCM_CTX primeiro se disponível e populado
   if(typeof NCM_CTX !== 'undefined'){
     var ctx = NCM_CTX[tab] || {};
-    var pkey = (period && period !== 'all') ? period : 'all';
+    var pkey = (period && period!=='all') ? period : 'all';
     var pctx = ctx[pkey] || ctx['all'] || {};
-    var ckey = (cst && cst !== 'all') ? cst : 'all';
+    var ckey = (cst && cst!=='all') ? cst : 'all';
     var r = pctx[ckey] || pctx['all'] || [];
     if(r.length > 0) return r.slice().sort();
   }
-  // Fallback: extrai NCMs dinamicamente dos produtos filtrados (funciona sem NCM_CTX)
-  var srcProds;
-  if(tab==='saidas')       srcProds = typeof PRODS   !== 'undefined' ? PRODS   : [];
-  else if(tab==='entradas') srcProds = typeof PRODS_E !== 'undefined' ? PRODS_E : [];
-  else if(tab==='ps')       srcProds = typeof PRODS_PS!== 'undefined' ? PRODS_PS: [];
-  else if(tab==='pe')       srcProds = typeof PRODS_PE!== 'undefined' ? PRODS_PE: [];
-  else srcProds = [];
-  
-  // Filtrar por período se necessário
-  var prodsFiltered = srcProds;
-  if(period && period !== 'all' && typeof DATES !== 'undefined'){
-    var datesArr = tab==='entradas'?DATES_E:(tab==='ps'?DATES_PS:(tab==='pe'?DATES_PE:DATES));
-    if(datesArr){
-      var ix = datesArr.map(function(d,i){ return d.startsWith(period)?i:-1; }).filter(function(i){ return i>=0; });
-      prodsFiltered = srcProds.filter(function(p){
-        return ix.some(function(i){ return (p.daily&&p.daily[i])||0 > 0; });
-      });
-    }
-  }
-  
-  // Filtrar por CST
-  var prodsCst = prodsFiltered;
-  if(cst && cst !== 'all'){
-    prodsCst = prodsFiltered.filter(function(p){
-      var pCst = tab==='saidas'||tab==='entradas' ? String(p.cst||'') : String(p.cst_pis||p.cst||'');
-      return pCst === String(cst);
-    });
-  }
-  
-  // Extrair NCMs únicas
+  // Fallback: extrai dos DETAIL arrays (sempre disponíveis)
+  var rows = _filterDetail(_getDetailArr(tab), period, cst, cfop, tab);
   var ncmSet = {};
-  prodsCst.forEach(function(p){ if(p.ncm) ncmSet[p.ncm]=1; });
+  rows.forEach(function(r){ var n=String(r[11]||''); if(n&&n!=='null'&&n!=='undefined') ncmSet[n]=1; });
   return Object.keys(ncmSet).sort();
 }
-function _updateNcmSelect(selId, tab, period, cst, currentVal){
+
+function _getValoresUnicos(tab, campo, period, cst, cfop){
+  // Extrai valores únicos de um campo dos DETAIL arrays (para popular selects dinamicamente)
+  // campo: 'cfop'=4, 'cst'=10, 'aliq'=8, 'ncm'=11
+  var colMap = {cfop:4, cst:10, aliq:8, ncm:11};
+  // Para PIS/Cofins: aliq_pis=8, cst_pis=10, aliq_cof=12, cst_cof=14
+  var colMapPS = {cfop:4, cst:10, cst_cof:14, aliq:8, aliq_cof:12, ncm:11};
+  var isPisCof = (tab==='ps'||tab==='pe');
+  var col = isPisCof ? (colMapPS[campo]||colMap[campo]||4) : (colMap[campo]||4);
+  var rows = _filterDetail(_getDetailArr(tab), period, cst, cfop, tab);
+  var vals = {};
+  rows.forEach(function(r){
+    var v = r[col];
+    if(v!==null&&v!==undefined&&v!==''&&v!=='null') vals[String(v).trim()]=1;
+  });
+  return Object.keys(vals).filter(function(v){ return v&&v!=='0'&&v!=='0.0'; }).sort(function(a,b){
+    return isNaN(a)||isNaN(b) ? a.localeCompare(b) : parseFloat(a)-parseFloat(b);
+  });
+}
+function _updateFilterSelect(selId, vals, curVal, labelFn){
+  // Atualiza qualquer select dinamicamente
   var sel = document.getElementById(selId);
   if(!sel) return;
-  var ncms = _getNcmsForContext(tab, period, cst);
-  var curVal = currentVal || sel.value;
+  var savedVal = curVal !== undefined ? curVal : sel.value;
   while(sel.options.length > 1) sel.remove(1);
-  ncms.forEach(function(n){
+  vals.forEach(function(v){
     var opt = document.createElement('option');
-    opt.value = n; opt.textContent = n;
+    opt.value = v;
+    opt.textContent = labelFn ? labelFn(v) : v;
     sel.appendChild(opt);
   });
-  if(curVal && curVal !== 'all'){
-    sel.value = ncms.indexOf(curVal) >= 0 ? curVal : 'all';
+  // Restaurar seleção se ainda disponível
+  if(savedVal && savedVal !== 'all' && vals.indexOf(savedVal) >= 0){
+    sel.value = savedVal;
+  } else {
+    sel.value = 'all';
   }
 }
-function refreshINcmSel(){ _updateNcmSelect('i-ncm-sel','saidas',iP,iCS,iNC); }
-function refreshENcmSel(){ _updateNcmSelect('e-ncm-sel','entradas',eP,eCS,eNC); }
-function refreshPSNcmSel(){ _updateNcmSelect('ps-ncm-sel','ps',psP,'all'); }
-function refreshPENcmSel(){ _updateNcmSelect('pe-ncm-sel','pe',peP,'all'); }
+function _updateNcmSelect(selId, tab, period, cst, cfop, currentVal){
+  var ncms = _getNcmsForContext(tab, period, cst, cfop);
+  _updateFilterSelect(selId, ncms, currentVal);
+}
+
+// ── Funções de refresh para cada aba ────────────────────────────────────────
+function refreshINcmSel(){  _updateNcmSelect('i-ncm-sel','saidas',iP,iCS,iCF,iNC); }
+function refreshENcmSel(){  _updateNcmSelect('e-ncm-sel','entradas',eP,eCS,eCF,eNC); }
+function refreshPSNcmSel(){ _updateNcmSelect('ps-ncm-sel','ps',psP,psCstPis,psCF); }
+function refreshPENcmSel(){ _updateNcmSelect('pe-ncm-sel','pe',peP,peCstPis,peCF); }
+
+function _lbl(prefix){ return function(v){ return prefix+' '+v; }; }
+function _lblAliq(v){ return v+'%'; }
+
+function refreshICstSel(){
+  var vals = _getValoresUnicos('saidas','cst',iP,'all',iCF);
+  _updateFilterSelect('i-cst-sel', vals, iCS, function(v){ return 'CST '+String(v).padStart(3,'0'); });
+  // Sincronizar select de alíquota também
+  refreshIAliqSel();
+}
+function refreshIAliqSel(){
+  var vals = _getValoresUnicos('saidas','aliq',iP,iCS,iCF);
+  _updateFilterSelect('i-aliq-sel', vals, iAL, _lblAliq);
+}
+function refreshICfopSel(){
+  var vals = _getValoresUnicos('saidas','cfop',iP,'all','all');
+  _updateFilterSelect('i-cfop-sel', vals, iCF);
+  refreshICstSel();
+}
+
+function refreshECstSel(){
+  var vals = _getValoresUnicos('entradas','cst',eP,'all',eCF);
+  _updateFilterSelect('e-cst-sel', vals, eCS, function(v){ return 'CST '+String(v).padStart(3,'0'); });
+  refreshEAliqSel();
+}
+function refreshEAliqSel(){
+  var vals = _getValoresUnicos('entradas','aliq',eP,eCS,eCF);
+  _updateFilterSelect('e-aliq-sel', vals, eAL, _lblAliq);
+}
+function refreshECfopSel(){
+  var vals = _getValoresUnicos('entradas','cfop',eP,'all','all');
+  _updateFilterSelect('e-cfop-sel', vals, eCF);
+  refreshECstSel();
+}
+
+function refreshPSCstSel(){
+  var pVals = _getValoresUnicos('ps','cst',psP,'all',psCF);
+  _updateFilterSelect('ps-cst-pis-sel', pVals, psCstPis, function(v){ return 'CST '+String(v).padStart(2,'0'); });
+  var cVals = _getValoresUnicos('ps','cst_cof',psP,'all',psCF);
+  _updateFilterSelect('ps-cst-cofins-sel', cVals, psCstCof, function(v){ return 'CST '+String(v).padStart(2,'0'); });
+  refreshPSNcmSel();
+}
+function refreshPSCfopSel(){
+  var vals = _getValoresUnicos('ps','cfop',psP,'all','all');
+  _updateFilterSelect('ps-cfop-sel', vals, psCF);
+  refreshPSCstSel();
+}
+
+function refreshPECstSel(){
+  var pVals = _getValoresUnicos('pe','cst',peP,'all',peCF);
+  _updateFilterSelect('pe-cst-pis-sel', pVals, peCstPis, function(v){ return 'CST '+String(v).padStart(2,'0'); });
+  var cVals = _getValoresUnicos('pe','cst_cof',peP,'all',peCF);
+  _updateFilterSelect('pe-cst-cofins-sel', cVals, peCstCof, function(v){ return 'CST '+String(v).padStart(2,'0'); });
+  refreshPENcmSel();
+}
+function refreshPECfopSel(){
+  var vals = _getValoresUnicos('pe','cfop',peP,'all','all');
+  _updateFilterSelect('pe-cfop-sel', vals, peCF);
+  refreshPECstSel();
+}
+
+function refreshAllFiltersI(){  refreshICfopSel(); }
+function refreshAllFiltersE(){  refreshECfopSel(); }
+function refreshAllFiltersPS(){ refreshPSCfopSel(); }
+function refreshAllFiltersPE(){ refreshPECfopSel(); }
 
 // ── CACHE + PERFORMANCE PARA CLIQUE EM PRODUTO ───────────────────────────────
 var _filterCache = {};
@@ -1577,9 +1611,9 @@ function selSP(el){
   renderS();
 }
 // ICMS FILTERS
-function onIPeriod(v){iP=v;iSel=null;iCfopClick=null;_invalidateCache();refreshINcmSel();updIFi();renderI();}
-function setICfop(c,el){iCF=c;iSel=null;iAliqClick=null;iCfopClick=null;document.querySelectorAll('#page-icms .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');_invalidateCache();refreshINcmSel();updIFi();renderI();}
-function setICst(v){iCS=v;iSel=null;iAliqClick=null;_invalidateCache();refreshINcmSel();updIFi();renderI();}
+function onIPeriod(v){iP=v;iSel=null;iCfopClick=null;_invalidateCache();refreshAllFiltersI();updIFi();renderI();}
+function setICfop(c,el){iCF=c;iSel=null;iAliqClick=null;iCfopClick=null;document.querySelectorAll('#page-icms .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');_invalidateCache();refreshICstSel();refreshINcmSel();updIFi();renderI();}
+function setICst(v){iCS=v;iSel=null;iAliqClick=null;_invalidateCache();refreshIAliqSel();refreshINcmSel();updIFi();renderI();}
 function setIAliq(v){iAL=v;iSel=null;iAliqClick=null;_invalidateCache();refreshINcmSel();updIFi();renderI();}
 function setINcmSel(v){iNC=v;iNCR='';var _inp=document.getElementById('i-ncm-input');if(_inp){_inp.value='';_inp.classList.remove('err');}var _msg=document.getElementById('i-ncm-msg');if(_msg)_msg.classList.remove('show');var _clr=document.getElementById('i-ncm-clear');if(_clr)_clr.classList.remove('show');_invalidateCache();iSel=null;_invalidateCache();updIFi();renderI();}
 function onNcmInput(val){
@@ -1860,9 +1894,9 @@ function renderSNoPie(){
 }
 // ICMS-ENTRADAS
 function fProds_E(){let p=PRODS_E.slice();if(eP!=='all'){var ixE=DATES_E.map(function(d,i){return d.startsWith(eP)?i:-1;}).filter(function(i){return i>=0;});p=p.map(function(pr){var liq=+(ixE.reduce(function(s,i){return s+(pr.daily[i]||0);},0).toFixed(2));var qty=+(ixE.reduce(function(s,i){return s+(pr.dailyq[i]||0);},0).toFixed(2));var base=+(ixE.reduce(function(s,i){return s+(pr.dailybase?pr.dailybase[i]||0:0);},0).toFixed(2));var icms=+(ixE.reduce(function(s,i){return s+(pr.dailyicms?pr.dailyicms[i]||0:0);},0).toFixed(2));if(liq<=0&&icms<=0) return null;var nr={};for(var k in pr)nr[k]=pr[k];nr.liq=liq;nr.qty=qty;nr.base=base;nr.icms=icms;nr.aliq=base>0?parseFloat((icms/base*100).toFixed(2)):pr.aliq;return nr;}).filter(Boolean);}if(eCF!=='all')p=p.filter(x=>x.cfop==eCF);if(eCfopClick!==null)p=p.filter(x=>x.cfop==eCfopClick);if(eInconsist)p=p.filter(x=>isInconsistente(x,true,false));if(eAviso)p=p.filter(x=>isAviso(x));if(eCS!=='all')p=p.filter(x=>x.cst==parseInt(eCS));if(eAL!=='all')p=p.filter(x=>x.aliq==parseFloat(eAL));if(eAliqClick!==null)p=p.filter(x=>x.aliq===eAliqClick);if(eNC==='none')return[];if(eNC!=='all')p=p.filter(x=>String(x.ncm||'')===String(eNC));return p;}
-function onEPeriod(v){eP=v;eSel=null;eCfopClick=null;_invalidateCache();refreshENcmSel();updEFi();renderE();}
-function setECfop(c,el){eCF=c;eSel=null;eAliqClick=null;eCfopClick=null;document.querySelectorAll('#page-icmse .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');updEFi();renderE();}
-function setECst(v){eCS=v;eSel=null;eAliqClick=null;_invalidateCache();refreshENcmSel();updEFi();renderE();}
+function onEPeriod(v){eP=v;eSel=null;eCfopClick=null;_invalidateCache();refreshAllFiltersE();updEFi();renderE();}
+function setECfop(c,el){eCF=c;eSel=null;eAliqClick=null;eCfopClick=null;document.querySelectorAll('#page-icmse .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');updEFi();_invalidateCache();refreshECstSel();refreshENcmSel();renderE();}
+function setECst(v){eCS=v;eSel=null;eAliqClick=null;_invalidateCache();refreshEAliqSel();refreshENcmSel();updEFi();renderE();}
 function setEAliq(v){eAL=v;eSel=null;eAliqClick=null;_invalidateCache();refreshENcmSel();updEFi();renderE();}
 function setENcmSel(v){eNC=v;eNCR='';document.getElementById('e-ncm-input').value='';document.getElementById('e-ncm-input').classList.remove('err');document.getElementById('e-ncm-msg').classList.remove('show');document.getElementById('e-ncm-clear').classList.remove('show');eSel=null;updEFi();renderE();}
 function onEncmInput(val){const v=val.trim();eNCR=v;const inp=document.getElementById('e-ncm-input'),msg=document.getElementById('e-ncm-msg'),clr=document.getElementById('e-ncm-clear');if(!v){eNC='all';inp.classList.remove('err');msg.classList.remove('show');clr.classList.remove('show');document.getElementById('e-ncm-sel').value='all';eSel=null;updEFi();renderE();return;}clr.classList.add('show');if(ALL_NCMS_E.has(v)){eNC=v;inp.classList.remove('err');msg.classList.remove('show');document.getElementById('e-ncm-sel').value=v;}else{eNC='none';inp.classList.add('err');msg.classList.add('show');document.getElementById('e-ncm-sel').value='all';}eSel=null;updEFi();renderE();}
@@ -2722,10 +2756,10 @@ function renderPEDetail(){
 }
 
 // ─── Filter handlers PIS/Cofins ───
-function onPSPeriod(v){psP=v;_invalidateCache();refreshPSNcmSel();renderPS();}
-function onPEPeriod(v){peP=v;_invalidateCache();refreshPENcmSel();renderPE();}
-function setPSCfop(c,el){psCF=c;document.querySelectorAll('#sub-pc-saidas .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');renderPS();}
-function setPECfop(c,el){peCF=c;document.querySelectorAll('#sub-pc-entradas .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');renderPE();}
+function onPSPeriod(v){psP=v;_invalidateCache();refreshAllFiltersPS();renderPS();}
+function onPEPeriod(v){peP=v;_invalidateCache();refreshAllFiltersPE();renderPE();}
+function setPSCfop(c,el){psCF=c;document.querySelectorAll('#sub-pc-saidas .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');_invalidateCache();refreshPSCstSel();renderPS();}
+function setPECfop(c,el){peCF=c;document.querySelectorAll('#sub-pc-entradas .cfop-btn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');_invalidateCache();refreshPECstSel();renderPE();}
 
 
 let icmsSubActive='s'; // sub-aba ICMS ativa
@@ -2985,10 +3019,10 @@ function bindEvents(){
     else if(ev==='pe-cfop'){var cfv=e.target.value;setPECfop(cfv==='all'?'all':parseInt(cfv),e.target);}
     else if(ev==='ps-period')onPSPeriod(e.target.value);
     else if(ev==='pe-period')onPEPeriod(e.target.value);
-    else if(ev==='ps-cst-pis'){psCstPis=e.target.value;_invalidateCache();refreshPSNcmSel();renderPS();}
-    else if(ev==='ps-cst-cofins'){psCstCof=e.target.value;_invalidateCache();refreshPSNcmSel();renderPS();}
-    else if(ev==='pe-cst-pis'){peCstPis=e.target.value;_invalidateCache();refreshPENcmSel();renderPE();}
-    else if(ev==='pe-cst-cofins'){peCstCof=e.target.value;_invalidateCache();refreshPENcmSel();renderPE();}
+    else if(ev==='ps-cst-pis'){psCstPis=e.target.value;_invalidateCache();refreshPSCstSel();renderPS();}
+    else if(ev==='ps-cst-cofins'){psCstCof=e.target.value;_invalidateCache();refreshPSCstSel();renderPS();}
+    else if(ev==='pe-cst-pis'){peCstPis=e.target.value;_invalidateCache();refreshPECstSel();renderPE();}
+    else if(ev==='pe-cst-cofins'){peCstCof=e.target.value;_invalidateCache();refreshPECstSel();renderPE();}
     else if(ev==='ps-search'||ev==='ps-cod-search')renderPSTable();
     else if(ev==='pe-search'||ev==='pe-cod-search')renderPETable();
     else if(ev==='ps-det-search')renderPSDetail();
@@ -5072,12 +5106,13 @@ window._initDashboard = function(){
     _setUpdatedAt();
     renderResumoFinal();
     setTimeout(_renderAllSparklines, 150);
+    // Inicializar todos os filtros dinâmicos após dados carregados
     setTimeout(function(){
-      refreshINcmSel();
-      refreshENcmSel();
-      refreshPSNcmSel();
-      refreshPENcmSel();
-    }, 200);
+      refreshAllFiltersI();   // ICMS Saídas: CFOP → CST → Aliq → NCM
+      refreshAllFiltersE();   // ICMS Entradas: CFOP → CST → Aliq → NCM
+      refreshAllFiltersPS();  // PIS/Cofins Saídas: CFOP → CST → NCM
+      refreshAllFiltersPE();  // PIS/Cofins Entradas: CFOP → CST → NCM
+    }, 300);
   };
 
   // Fallback: se o script já carregou antes do onload (cache), dispara direto
