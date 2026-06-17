@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<!-- DASHBOARD_POLO_LC224_V5_PERIODO_GERAL_CORRIGIDO -->
 <!-- DASHBOARD_POLO_LC224_V4_VISUAL_FILTROS -->
 <!-- DASHBOARD_POLO_LC224_V3_ESTRUTURA_CORRIGIDA -->
 <!-- DASHBOARD_POLO_LC224_V2_CLIQUE_CORRIGIDO -->
@@ -870,7 +871,7 @@ tbody td.qty-c{color:var(--a5)}
 
       <div class="lc224-filter-row">
         <span style="font-size:11px;color:var(--muted)">Período:</span>
-        <select class="fsel" id="lc224-period-sel" onchange="renderLC224()">
+        <select class="fsel" id="lc224-period-sel" onchange="_lc224LocalPeriodChanged(this)">
           <option value="all">Todos</option>
         </select>
 
@@ -2620,9 +2621,12 @@ function setGlobalPeriod(v){
   // Atualizar todos os estados de período
   sP=v; enP=v; iP=v; eP=v; psP=v; peP=v;
   // Atualizar todos os selects de período
-  ['s-period-sel','en-period-sel','i-period-sel','e-period-sel','ps-period-sel','pe-period-sel'].forEach(function(id){
+  ['s-period-sel','en-period-sel','i-period-sel','e-period-sel','ps-period-sel','pe-period-sel','lc224-period-sel'].forEach(function(id){
     var el=document.getElementById(id);
-    if(el) el.value=v;
+    if(el){
+      if(id==='lc224-period-sel') el.dataset.globalPeriod=v;
+      el.value=v;
+    }
   });
   // Resetar seleções
   sSel=null; enSel=null; iSel=null; eSel=null; psSel=null; peSel=null;
@@ -2644,6 +2648,7 @@ function setGlobalPeriod(v){
       } else if(fact==='tab-pc'){
         if(pcSubActive==='ps') renderPS();
         else if(pcSubActive==='pe') renderPE();
+        else if(pcSubActive==='lc224') renderLC224();
         else renderPCR();
       } else if(fact==='tab-rt') renderRT();
       else if(fact==='tab-saidas-fiscal') renderS();
@@ -5410,6 +5415,11 @@ function _syncLC224Groups(){
   }
 }
 
+function _lc224LocalPeriodChanged(sel){
+  if(sel) sel.dataset.globalPeriod='';
+  renderLC224();
+}
+
 function _initLC224Periods(){
   const sel=document.getElementById('lc224-period-sel');
   if(!sel) return;
@@ -5417,7 +5427,10 @@ function _initLC224Periods(){
   const periods=(typeof PERIODS_PS!=='undefined')?PERIODS_PS:
                 (typeof PERIODS!=='undefined')?PERIODS:[];
 
-  const atual=sel.value||'all';
+  const globalSel=document.getElementById('global-period');
+  const globalAtual=globalSel ? (globalSel.value||'all') : 'all';
+  const pendente=sel.dataset.globalPeriod||'';
+  const atual=sel.value||pendente||globalAtual||'all';
   const assinatura=periods.join('|');
 
   if(sel.dataset.assinatura!==assinatura){
@@ -5432,11 +5445,17 @@ function _initLC224Periods(){
 
     sel.dataset.assinatura=assinatura;
 
-    if(Array.from(sel.options).some(o=>o.value===atual)){
-      sel.value=atual;
+    const desejado=pendente||atual||globalAtual||'all';
+    if(Array.from(sel.options).some(o=>o.value===desejado)){
+      sel.value=desejado;
+    }else{
+      sel.value='all';
     }
+  }else if(pendente && Array.from(sel.options).some(o=>o.value===pendente)){
+    sel.value=pendente;
   }
 
+  if(pendente) sel.dataset.globalPeriod='';
   _syncLC224Groups();
 }
 
