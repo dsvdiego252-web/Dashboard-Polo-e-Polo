@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<!-- DASHBOARD_POLO_LC224_V4_VISUAL_FILTROS -->
 <!-- DASHBOARD_POLO_LC224_V3_ESTRUTURA_CORRIGIDA -->
 <!-- DASHBOARD_POLO_LC224_V2_CLIQUE_CORRIGIDO -->
 <!-- DASHBOARD_POLO_LC224_PLANILHA_DINAMICA -->
@@ -137,6 +138,76 @@ tbody td.qty-c{color:var(--a5)}
 #splash .pill-loader::after{content:'';position:absolute;left:50%;top:0;width:2px;height:100%;background:rgba(0,0,0,.18)}
 #splash .loading-status{font-family:'DM Mono',monospace;font-size:11px;color:#aeb5d0;letter-spacing:.08em;text-transform:uppercase}
 @keyframes pillSpin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+/* LC 224/2025 — V4 visual e filtros */
+.lc224-filter-row{
+  display:flex;gap:8px;flex-wrap:wrap;align-items:center
+}
+.lc224-filter-row .finput{
+  width:150px;max-width:180px
+}
+.lc224-tax-card{
+  --kc:#e05555 !important;
+  background:rgba(224,85,85,.10) !important;
+  border:1px solid rgba(224,85,85,.42) !important;
+}
+.lc224-tax-card .kval{
+  color:#e05555 !important;
+}
+.lc224-chart-card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:16px;
+  margin:0 20px 12px;
+}
+.lc224-chart-wrap{
+  position:relative;
+  height:250px;
+}
+.lc224-chart-help{
+  font-family:var(--fm);
+  font-size:10px;
+  color:var(--muted);
+  margin-top:8px;
+}
+.lc224-active-filter{
+  display:none;
+  align-items:center;
+  gap:8px;
+  background:rgba(232,184,75,.10);
+  border:1px solid rgba(232,184,75,.32);
+  border-radius:6px;
+  padding:5px 9px;
+  font-family:var(--fm);
+  font-size:10px;
+  color:var(--accent);
+  margin-top:8px;
+}
+.lc224-active-filter.show{display:flex}
+.lc224-active-filter button{
+  margin-left:auto;
+  background:none;
+  border:none;
+  color:var(--accent);
+  cursor:pointer;
+  font-size:11px;
+}
+.lc224-matrix{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:16px;
+  margin:0 20px 20px;
+}
+.lc224-matrix .mscroll{
+  max-height:410px;
+  overflow:auto;
+}
+.lc224-matrix table{
+  min-width:1080px;
+}
+
 </style>
 </head>
 <body>
@@ -796,15 +867,33 @@ tbody td.qty-c{color:var(--a5)}
         A base de cálculo corresponde ao valor líquido das vendas dos produtos cujas NCMs ou posições constam na planilha de referência.
         <span id="lc224-source" style="color:var(--accent)"></span>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+
+      <div class="lc224-filter-row">
         <span style="font-size:11px;color:var(--muted)">Período:</span>
         <select class="fsel" id="lc224-period-sel" onchange="renderLC224()">
           <option value="all">Todos</option>
         </select>
+
         <span style="font-size:11px;color:var(--muted);margin-left:8px">Grupo:</span>
         <select class="fsel" id="lc224-grupo-sel" onchange="renderLC224()" style="max-width:280px">
           <option value="all">Todos os grupos</option>
         </select>
+
+        <span style="font-size:11px;color:var(--muted);margin-left:8px">NCM:</span>
+        <input
+          type="text"
+          class="finput"
+          id="lc224-ncm-input"
+          oninput="renderLC224()"
+          placeholder="NCM ou capítulo..."
+          autocomplete="off"
+        >
+        <button class="ico-btn show" onclick="clearLC224NCM()" title="Limpar NCM">✕</button>
+      </div>
+
+      <div class="lc224-active-filter" id="lc224-active-filter">
+        <span id="lc224-active-filter-text"></span>
+        <button onclick="clearLC224Group()">✕ Limpar grupo</button>
       </div>
     </div>
 
@@ -815,25 +904,29 @@ tbody td.qty-c{color:var(--a5)}
         <div class="kval" id="lc224-k-prods">—</div>
         <div class="ksub">produtos abrangidos pela LC 224</div>
       </div>
+
       <div class="kpi-card" style="--kc:var(--a3)">
         <div class="kico">💰</div>
         <div class="klbl">Vendas LC 224</div>
         <div class="kval" id="lc224-k-base">—</div>
         <div class="ksub">base do débito adicional</div>
       </div>
-      <div class="kpi-card" style="--kc:var(--accent)">
+
+      <div class="kpi-card lc224-tax-card">
         <div class="kico">📊</div>
         <div class="klbl">PIS Adicional (0,165%)</div>
         <div class="kval" id="lc224-k-pis">—</div>
         <div class="ksub">vendas × 0,165%</div>
       </div>
-      <div class="kpi-card" style="--kc:var(--a4)">
+
+      <div class="kpi-card lc224-tax-card">
         <div class="kico">📊</div>
         <div class="klbl">Cofins Adicional (0,76%)</div>
         <div class="kval" id="lc224-k-cof">—</div>
         <div class="ksub">vendas × 0,76%</div>
       </div>
-      <div class="kpi-card" style="--kc:var(--a5)">
+
+      <div class="kpi-card lc224-tax-card">
         <div class="kico">🧾</div>
         <div class="klbl">Débito Adicional Total</div>
         <div class="kval" id="lc224-k-total">—</div>
@@ -841,51 +934,42 @@ tbody td.qty-c{color:var(--a5)}
       </div>
     </div>
 
-    <div style="padding:0 20px 10px">
-      <div style="font-family:var(--fm);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:8px">
-        Resumo por Grupo LC 224/2025
-        <span style="flex:1;height:1px;background:var(--border);display:inline-block"></span>
+    <div class="lc224-chart-card">
+      <div class="ctitle">Resumo por Grupo LC 224/2025</div>
+      <div class="lc224-chart-wrap">
+        <canvas id="lc224-grupo-chart"></canvas>
       </div>
-      <div style="overflow-x:auto">
-        <table class="det-tbl" id="lc224-grupo-tbl">
-          <thead><tr>
-            <th>Grupo de Produto</th>
-            <th class="r">Produtos</th>
-            <th class="r">Valor de Venda</th>
-            <th class="r">PIS 0,165%</th>
-            <th class="r">Cofins 0,76%</th>
-            <th class="r">Débito Total</th>
-          </tr></thead>
-          <tbody id="lc224-grupo-body"></tbody>
-          <tfoot><tr>
-            <td><b>TOTAL</b></td>
-            <td class="r" id="lc224-f-itens">—</td>
-            <td class="r" id="lc224-f-base">—</td>
-            <td class="r" id="lc224-f-pis">—</td>
-            <td class="r" id="lc224-f-cof">—</td>
-            <td class="r" id="lc224-f-total">—</td>
-          </tr></tfoot>
-        </table>
+      <div class="lc224-chart-help">
+        Clique em uma barra para filtrar os KPIs e a matriz de produtos. Clique novamente no mesmo grupo para remover o filtro.
       </div>
     </div>
 
-    <div style="padding:0 20px 20px">
-      <div style="font-family:var(--fm);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:8px">
-        Detalhamento dos Produtos Vendidos
-        <span style="flex:1;height:1px;background:var(--border);display:inline-block"></span>
+    <div class="lc224-matrix">
+      <div class="ctitle">Matriz de Produtos Vendidos — LC 224/2025</div>
+      <div class="mat-tb">
+        <div class="sw">
+          <span class="si">🔢</span>
+          <input type="text" id="lc224-cod-search" oninput="renderLC224()" placeholder="Buscar código...">
+        </div>
+        <div class="sw">
+          <span class="si">🔍</span>
+          <input type="text" id="lc224-prod-search" oninput="renderLC224()" placeholder="Buscar produto...">
+        </div>
+        <span class="minfo" id="lc224-prod-info"></span>
       </div>
-      <div style="overflow-x:auto">
-        <table class="det-tbl" id="lc224-prod-tbl">
+
+      <div class="mscroll">
+        <table id="lc224-prod-tbl">
           <thead><tr>
             <th>Cód.</th>
             <th>Produto</th>
             <th>NCM</th>
             <th>Grupo</th>
-            <th class="r">Qtd.</th>
-            <th class="r">Valor de Venda</th>
-            <th class="r">PIS 0,165%</th>
-            <th class="r">Cofins 0,76%</th>
-            <th class="r">Débito Total</th>
+            <th class="tr">Qtd.</th>
+            <th class="tr">Valor de Venda</th>
+            <th class="tr">PIS 0,165%</th>
+            <th class="tr">Cofins 0,76%</th>
+            <th class="tr">Débito Total</th>
           </tr></thead>
           <tbody id="lc224-prod-body">
             <tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px;font-family:var(--fm);font-size:11px">
@@ -5261,14 +5345,13 @@ window._initDashboard = function(){
 })();
 
 
+
 // ══════════════════════════════════════════════════════════════════════════════
-// LC 224/2025 — Subaba PIS/Cofins
-// Cálculo adicional sobre o valor líquido das vendas:
-// PIS 0,165% · Cofins 0,76%
-// As regras principais são geradas pelo atualizar_polo.py a partir da planilha.
+// LC 224/2025 — Subaba PIS/Cofins V4
 // ══════════════════════════════════════════════════════════════════════════════
 
 window.LC224_CONFIG_DEFAULT={"pis_pct":0.165,"cofins_pct":0.76,"fonte":"PIS_Cofins_10%.xlsx","grupos":[{"id":"oleos-vegetais","label":"Óleo de soja e outros óleos vegetais","descricao":"Óleo de soja da posição 15.07 e outros óleos vegetais das posições 15.08 a 15.14","referencia":"15.07, 15.08 a 15.14","prefixos":["1507","1508","1509","1510","1511","1512","1513","1514"],"exatos":[]},{"id":"saboes-de-toucador","label":"Sabões de toucador","descricao":"Sabões de toucador classificados no código 3401.11.90 Ex 01 da TIPI","referencia":"3401.11.90","prefixos":[],"exatos":["34011190"]},{"id":"higiene-bucal-dentaria","label":"Higiene bucal ou dentária","descricao":"Produtos para higiene bucal ou dentária classificados na posição 33.06 da TIPI","referencia":"33.06","prefixos":["3306"],"exatos":[]},{"id":"papel-higienico","label":"Papel higiênico","descricao":"Papel higiênico classificado no código 4818.10.00 da TIPI","referencia":"4818.10.00","prefixos":[],"exatos":["48181000"]},{"id":"massas-alimenticias","label":"Massas alimentícias","descricao":"Massas alimentícias classificadas nos códigos indicados na planilha","referencia":"1902.11.00 1902.19.00 1902.20.00 1902.30.00","prefixos":[],"exatos":["19021100","19021900","19022000","19023000"]}]};
+let _LC224_GROUP_CHART=null;
 
 function _lc224Config(){
   return (window.LC224_CONFIG && Array.isArray(window.LC224_CONFIG.grupos))
@@ -5304,39 +5387,177 @@ function _lc224Esc(v){
 function _syncLC224Groups(){
   const sel=document.getElementById('lc224-grupo-sel');
   if(!sel) return;
+
   const cfg=_lc224Config();
   const atual=sel.value||'all';
   const assinatura=(cfg.grupos||[]).map(g=>g.id+'|'+g.label).join(';;');
+
   if(sel.dataset.assinatura===assinatura) return;
+
   sel.innerHTML='<option value="all">Todos os grupos</option>';
+
   (cfg.grupos||[]).forEach(function(g){
     const op=document.createElement('option');
     op.value=g.id;
     op.textContent=g.label||g.descricao||g.id;
     sel.appendChild(op);
   });
+
   sel.dataset.assinatura=assinatura;
-  if(Array.from(sel.options).some(o=>o.value===atual)) sel.value=atual;
+
+  if(Array.from(sel.options).some(o=>o.value===atual)){
+    sel.value=atual;
+  }
 }
 
 function _initLC224Periods(){
   const sel=document.getElementById('lc224-period-sel');
   if(!sel) return;
+
   const periods=(typeof PERIODS_PS!=='undefined')?PERIODS_PS:
                 (typeof PERIODS!=='undefined')?PERIODS:[];
+
   const atual=sel.value||'all';
   const assinatura=periods.join('|');
+
   if(sel.dataset.assinatura!==assinatura){
     sel.innerHTML='<option value="all">Todos</option>';
+
     periods.forEach(function(p){
       const opt=document.createElement('option');
-      opt.value=p; opt.textContent=p;
+      opt.value=p;
+      opt.textContent=p;
       sel.appendChild(opt);
     });
+
     sel.dataset.assinatura=assinatura;
-    if(Array.from(sel.options).some(o=>o.value===atual)) sel.value=atual;
+
+    if(Array.from(sel.options).some(o=>o.value===atual)){
+      sel.value=atual;
+    }
   }
+
   _syncLC224Groups();
+}
+
+function clearLC224NCM(){
+  const input=document.getElementById('lc224-ncm-input');
+  if(input) input.value='';
+  renderLC224();
+}
+
+function clearLC224Group(){
+  const sel=document.getElementById('lc224-grupo-sel');
+  if(sel) sel.value='all';
+  renderLC224();
+}
+
+function _renderLC224GroupChart(grupoMap, grupoSelecionado){
+  const canvas=document.getElementById('lc224-grupo-chart');
+  if(!canvas || typeof Chart==='undefined') return;
+
+  const cfg=_lc224Config();
+  const grupos=(cfg.grupos||[]).filter(g=>grupoMap[g.id]);
+
+  const labels=grupos.map(g=>g.label||g.descricao||g.id);
+  const values=grupos.map(g=>grupoMap[g.id].venda);
+  const colors=grupos.map(g=>g.id===grupoSelecionado
+    ? 'rgba(232,184,75,.92)'
+    : 'rgba(91,141,238,.72)'
+  );
+  const borders=grupos.map(g=>g.id===grupoSelecionado
+    ? '#e8b84b'
+    : 'rgba(91,141,238,.95)'
+  );
+
+  if(_LC224_GROUP_CHART){
+    try{_LC224_GROUP_CHART.destroy()}catch(e){}
+  }
+
+  _LC224_GROUP_CHART=new Chart(canvas,{
+    type:'bar',
+    data:{
+      labels:labels,
+      datasets:[{
+        label:'Valor de Venda',
+        data:values,
+        backgroundColor:colors,
+        borderColor:borders,
+        borderWidth:1,
+        borderRadius:5
+      }]
+    },
+    options:{
+      indexAxis:'y',
+      responsive:true,
+      maintainAspectRatio:false,
+      interaction:{mode:'nearest',intersect:true},
+      onClick:function(evt,els){
+        if(!els || !els.length) return;
+
+        const idx=els[0].index;
+        const grupo=grupos[idx];
+        if(!grupo) return;
+
+        const sel=document.getElementById('lc224-grupo-sel');
+        if(!sel) return;
+
+        sel.value=(sel.value===grupo.id)?'all':grupo.id;
+        renderLC224();
+      },
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#181c26',
+          borderColor:'#232840',
+          borderWidth:1,
+          titleColor:'#e8b84b',
+          bodyColor:'#e8eaf0',
+          callbacks:{
+            title:function(items){
+              const i=items && items[0] ? items[0].dataIndex : -1;
+              const g=grupos[i];
+              return g ? (g.label||g.descricao||g.id) : '';
+            },
+            label:function(ctx){
+              const i=ctx.dataIndex;
+              const g=grupos[i];
+              const d=g ? grupoMap[g.id] : null;
+              if(!d) return '';
+              return [
+                ' Vendas: '+fmt(d.venda),
+                ' Produtos: '+fmtN(d.itens),
+                ' PIS: '+fmt(d.pis),
+                ' Cofins: '+fmt(d.cof),
+                ' Débito total: '+fmt(d.total)
+              ];
+            }
+          }
+        }
+      },
+      scales:{
+        x:{
+          grid:{color:'#1a1e2a'},
+          ticks:{
+            color:'#6b7394',
+            font:{family:'DM Mono',size:10},
+            callback:function(v){
+              return 'R$ '+(Number(v)>=1000000
+                ? (Number(v)/1000000).toFixed(1)+'M'
+                : (Number(v)/1000).toFixed(0)+'k');
+            }
+          }
+        },
+        y:{
+          grid:{display:false},
+          ticks:{
+            color:'#aeb5d0',
+            font:{family:'DM Mono',size:10}
+          }
+        }
+      }
+    }
+  });
 }
 
 function renderLC224(){
@@ -5345,27 +5566,46 @@ function renderLC224(){
   const cfg=_lc224Config();
   const pisPct=Number(cfg.pis_pct||0.165);
   const cofPct=Number(cfg.cofins_pct||0.76);
+
   const perFiltro=(document.getElementById('lc224-period-sel')||{}).value||'all';
   const grpFiltro=(document.getElementById('lc224-grupo-sel')||{}).value||'all';
+  const ncmFiltro=_lc224NCM((document.getElementById('lc224-ncm-input')||{}).value||'');
+  const codBusca=String((document.getElementById('lc224-cod-search')||{}).value||'').trim().toLowerCase();
+  const prodBusca=String((document.getElementById('lc224-prod-search')||{}).value||'').trim().toLowerCase();
 
   const source=document.getElementById('lc224-source');
   if(source) source.textContent='Fonte: '+(cfg.fonte||'planilha LC 224');
 
+  const active=document.getElementById('lc224-active-filter');
+  const activeText=document.getElementById('lc224-active-filter-text');
+
+  if(active && activeText){
+    const grupoAtivo=(cfg.grupos||[]).find(g=>g.id===grpFiltro);
+    if(grupoAtivo){
+      active.classList.add('show');
+      activeText.textContent='Grupo selecionado: '+(grupoAtivo.label||grupoAtivo.descricao);
+    }else{
+      active.classList.remove('show');
+      activeText.textContent='';
+    }
+  }
+
   if(typeof DETAIL_PS==='undefined'){
     const pb=document.getElementById('lc224-prod-body');
-    if(pb) pb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px;font-family:var(--fm);font-size:11px">Aguardando o carregamento dos dados completos...</td></tr>';
+    if(pb){
+      pb.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px;font-family:var(--fm);font-size:11px">Aguardando o carregamento dos dados completos...</td></tr>';
+    }
     return;
   }
 
   const prodMap={};
   const cfopsVenda=(typeof CFOPS_VENDAS!=='undefined' && Array.isArray(CFOPS_VENDAS))
-    ? CFOPS_VENDAS.map(Number) : [];
+    ? CFOPS_VENDAS.map(Number)
+    : [];
 
-  // DETAIL_PS:
-  // [data, doc, cod, produto, cfop, qtd, valor_liq, base_pis, aliq_pis,
-  //  valor_pis, base_cofins, aliq_cofins, valor_cofins, cst_pis, cst_cofins, ncm]
   (DETAIL_PS||[]).forEach(function(r){
     const dt=String(r[0]||'');
+
     if(perFiltro!=='all' && !dt.startsWith(perFiltro)) return;
 
     const cfop=Number(r[4]||0);
@@ -5376,35 +5616,54 @@ function renderLC224(){
 
     const ncm=_lc224NCM(r[15]);
     const grupo=_lc224MatchGrupo(ncm);
+
     if(!grupo) return;
-    if(grpFiltro!=='all' && grupo.id!==grpFiltro) return;
+    if(ncmFiltro && !ncm.startsWith(ncmFiltro)) return;
 
     const cod=String(r[2]||'');
     const nome=String(r[3]||'');
     const key=[cod,nome,ncm,grupo.id].join('|');
+
     if(!prodMap[key]){
-      prodMap[key]={cod:cod,nome:nome,ncm:ncm,grupo:grupo,qty:0,venda:0};
+      prodMap[key]={
+        cod:cod,
+        nome:nome,
+        ncm:ncm,
+        grupo:grupo,
+        qty:0,
+        venda:0
+      };
     }
+
     prodMap[key].qty+=Number(r[5]||0);
     prodMap[key].venda+=venda;
   });
 
-  const prods=Object.values(prodMap)
+  const prodsTodos=Object.values(prodMap)
     .filter(p=>p.venda>0)
     .map(function(p){
       p.pis=+(p.venda*pisPct/100).toFixed(2);
       p.cof=+(p.venda*cofPct/100).toFixed(2);
       p.total=+(p.pis+p.cof).toFixed(2);
       return p;
-    })
-    .sort((a,b)=>b.venda-a.venda);
+    });
 
   const grupoMap={};
-  prods.forEach(function(p){
+
+  prodsTodos.forEach(function(p){
     const id=p.grupo.id;
+
     if(!grupoMap[id]){
-      grupoMap[id]={grupo:p.grupo,itens:0,venda:0,pis:0,cof:0,total:0};
+      grupoMap[id]={
+        grupo:p.grupo,
+        itens:0,
+        venda:0,
+        pis:0,
+        cof:0,
+        total:0
+      };
     }
+
     grupoMap[id].itens++;
     grupoMap[id].venda+=p.venda;
     grupoMap[id].pis+=p.pis;
@@ -5412,66 +5671,59 @@ function renderLC224(){
     grupoMap[id].total+=p.total;
   });
 
+  _renderLC224GroupChart(grupoMap,grpFiltro);
+
+  let prods=prodsTodos.filter(function(p){
+    if(grpFiltro!=='all' && p.grupo.id!==grpFiltro) return false;
+    if(codBusca && !String(p.cod).toLowerCase().includes(codBusca)) return false;
+    if(prodBusca && !String(p.nome).toLowerCase().includes(prodBusca)) return false;
+    return true;
+  });
+
+  prods.sort((a,b)=>b.venda-a.venda);
+
   const totItens=prods.length;
   const totVenda=prods.reduce((s,p)=>s+p.venda,0);
   const totPis=+(totVenda*pisPct/100).toFixed(2);
   const totCof=+(totVenda*cofPct/100).toFixed(2);
   const totTotal=+(totPis+totCof).toFixed(2);
 
-  function setEl(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
+  function setEl(id,v){
+    const e=document.getElementById(id);
+    if(e)e.textContent=v;
+  }
+
   setEl('lc224-k-prods',fmtN(totItens));
   setEl('lc224-k-base',fmt(totVenda));
   setEl('lc224-k-pis',fmt(totPis));
   setEl('lc224-k-cof',fmt(totCof));
   setEl('lc224-k-total',fmt(totTotal));
-
-  const tbody=document.getElementById('lc224-grupo-body');
-  if(tbody){
-    const linhas=(cfg.grupos||[])
-      .filter(g=>grupoMap[g.id])
-      .map(function(g){
-        const d=grupoMap[g.id];
-        return '<tr>'+
-          '<td title="'+_lc224Esc(g.descricao||g.label)+'">'+_lc224Esc(g.label||g.descricao)+'</td>'+
-          '<td class="r">'+fmtN(d.itens)+'</td>'+
-          '<td class="r">'+fmt(d.venda)+'</td>'+
-          '<td class="r" style="color:var(--a2)">'+fmt(d.pis)+'</td>'+
-          '<td class="r" style="color:var(--a3)">'+fmt(d.cof)+'</td>'+
-          '<td class="r" style="font-weight:700">'+fmt(d.total)+'</td>'+
-          '</tr>';
-      });
-    tbody.innerHTML=linhas.length?linhas.join(''):
-      '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:16px">Nenhum grupo com venda no filtro selecionado.</td></tr>';
-  }
-
-  setEl('lc224-f-itens',fmtN(totItens));
-  setEl('lc224-f-base',fmt(totVenda));
-  setEl('lc224-f-pis',fmt(totPis));
-  setEl('lc224-f-cof',fmt(totCof));
-  setEl('lc224-f-total',fmt(totTotal));
+  setEl('lc224-prod-info',fmtN(totItens)+' produto(s)');
 
   const pbody=document.getElementById('lc224-prod-body');
+
   if(pbody){
     if(!prods.length){
-      pbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px;font-family:var(--fm);font-size:11px">Nenhum produto vendido da LC 224/2025 foi encontrado no período selecionado.</td></tr>';
+      pbody.innerHTML='<tr><td colspan="9" style="text-align:center;color:var(--muted);padding:20px;font-family:var(--fm);font-size:11px">Nenhum produto vendido da LC 224/2025 foi encontrado nos filtros selecionados.</td></tr>';
     }else{
       pbody.innerHTML=prods.map(function(p){
         return '<tr>'+
           '<td style="font-family:var(--fm);font-size:11px">'+_lc224Esc(p.cod)+'</td>'+
-          '<td style="max-width:250px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+_lc224Esc(p.nome)+'">'+_lc224Esc(p.nome)+'</td>'+
-          '<td style="font-family:var(--fm);font-size:11px">'+_lc224Esc(p.ncm)+'</td>'+
-          '<td style="font-size:11px;color:var(--muted)" title="'+_lc224Esc(p.grupo.descricao||'')+'">'+_lc224Esc(p.grupo.label||p.grupo.descricao)+'</td>'+
-          '<td class="r">'+fmtN(p.qty)+'</td>'+
-          '<td class="r">'+fmt(p.venda)+'</td>'+
-          '<td class="r" style="color:var(--a2)">'+fmt(p.pis)+'</td>'+
-          '<td class="r" style="color:var(--a3)">'+fmt(p.cof)+'</td>'+
-          '<td class="r" style="font-weight:700">'+fmt(p.total)+'</td>'+
+          '<td style="max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+_lc224Esc(p.nome)+'">'+_lc224Esc(p.nome)+'</td>'+
+          '<td style="font-family:var(--fm);font-size:11px;color:var(--a2)">'+_lc224Esc(p.ncm)+'</td>'+
+          '<td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;color:var(--muted)" title="'+_lc224Esc(p.grupo.descricao||'')+'">'+_lc224Esc(p.grupo.label||p.grupo.descricao)+'</td>'+
+          '<td class="tr">'+fmtN(p.qty)+'</td>'+
+          '<td class="tr money">'+fmt(p.venda)+'</td>'+
+          '<td class="tr" style="color:#e05555">'+fmt(p.pis)+'</td>'+
+          '<td class="tr" style="color:#e05555">'+fmt(p.cof)+'</td>'+
+          '<td class="tr" style="color:#e05555;font-weight:700">'+fmt(p.total)+'</td>'+
           '</tr>';
       }).join('');
     }
   }
 }
 // ── fim LC 224/2025 ─────────────────────────────────────────────────────────
+
 
 
 </script>
