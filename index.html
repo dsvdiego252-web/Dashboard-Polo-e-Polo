@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<!-- DASHBOARD_POLO_LC224_V6_GRAFICO_ORDENADO -->
 <!-- DASHBOARD_POLO_LC224_V5_PERIODO_GERAL_CORRIGIDO -->
 <!-- DASHBOARD_POLO_LC224_V4_VISUAL_FILTROS -->
 <!-- DASHBOARD_POLO_LC224_V3_ESTRUTURA_CORRIGIDA -->
@@ -5476,7 +5477,11 @@ function _renderLC224GroupChart(grupoMap, grupoSelecionado){
   if(!canvas || typeof Chart==='undefined') return;
 
   const cfg=_lc224Config();
-  const grupos=(cfg.grupos||[]).filter(g=>grupoMap[g.id]);
+  // Ordena do maior valor de venda para o menor:
+  // maior grupo no topo e menor grupo na parte inferior.
+  const grupos=(cfg.grupos||[])
+    .filter(g=>grupoMap[g.id])
+    .sort((a,b)=>(grupoMap[b.id]?.venda||0)-(grupoMap[a.id]?.venda||0));
 
   const labels=grupos.map(g=>g.label||g.descricao||g.id);
   const values=grupos.map(g=>grupoMap[g.id].venda);
