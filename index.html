@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<!-- DASHBOARD_POLO_LC224_V7_EXPORTAR_EXCEL -->
 <!-- DASHBOARD_POLO_LC224_V6_GRAFICO_ORDENADO -->
 <!-- DASHBOARD_POLO_LC224_V5_PERIODO_GERAL_CORRIGIDO -->
 <!-- DASHBOARD_POLO_LC224_V4_VISUAL_FILTROS -->
@@ -957,6 +958,9 @@ tbody td.qty-c{color:var(--a5)}
           <span class="si">🔍</span>
           <input type="text" id="lc224-prod-search" oninput="renderLC224()" placeholder="Buscar produto...">
         </div>
+        <button class="cfop-btn" type="button" onclick="exportLC224Excel()" title="Exportar os produtos exibidos para Excel" style="border-color:var(--a3);color:var(--a3);white-space:nowrap">
+          📥 Exportar Excel
+        </button>
         <span class="minfo" id="lc224-prod-info"></span>
       </div>
 
@@ -5584,6 +5588,102 @@ function _renderLC224GroupChart(grupoMap, grupoSelecionado){
   });
 }
 
+
+function exportLC224Excel(){
+  try{
+    if(typeof XLSX==='undefined'){
+      alert('A biblioteca de exportação para Excel ainda não foi carregada.');
+      return;
+    }
+
+    const rows=Array.isArray(window._LC224_EXPORT_ROWS)?window._LC224_EXPORT_ROWS:[];
+    if(!rows.length){
+      alert('Não há produtos da LC 224/2025 para exportar nos filtros atuais.');
+      return;
+    }
+
+    const periodo=(document.getElementById('lc224-period-sel')||{}).value||'all';
+    const grupoId=(document.getElementById('lc224-grupo-sel')||{}).value||'all';
+    const ncm=(document.getElementById('lc224-ncm-input')||{}).value||'';
+    const cod=(document.getElementById('lc224-cod-search')||{}).value||'';
+    const produto=(document.getElementById('lc224-prod-search')||{}).value||'';
+
+    const cfg=_lc224Config();
+    const grupo=(cfg.grupos||[]).find(g=>g.id===grupoId);
+    const grupoNome=grupo?(grupo.label||grupo.descricao||grupo.id):'Todos os grupos';
+
+    const dados=rows.map(function(p){
+      return {
+        'Código': p.cod,
+        'Produto': p.nome,
+        'NCM': p.ncm,
+        'Grupo LC 224/2025': p.grupo.label||p.grupo.descricao||p.grupo.id,
+        'Quantidade': Number(p.qty||0),
+        'Valor de Venda': Number(p.venda||0),
+        'PIS Adicional 0,165%': Number(p.pis||0),
+        'Cofins Adicional 0,76%': Number(p.cof||0),
+        'Débito Adicional Total': Number(p.total||0)
+      };
+    });
+
+    const resumo=[
+      ['Relatório','Produtos LC 224/2025'],
+      ['Período',periodo==='all'?'Todos':periodo],
+      ['Grupo',grupoNome],
+      ['Filtro NCM',ncm||'Todos'],
+      ['Filtro Código',cod||'Todos'],
+      ['Filtro Produto',produto||'Todos'],
+      ['Quantidade de Produtos',rows.length],
+      ['Valor Total de Venda',rows.reduce((s,p)=>s+Number(p.venda||0),0)],
+      ['PIS Adicional Total',rows.reduce((s,p)=>s+Number(p.pis||0),0)],
+      ['Cofins Adicional Total',rows.reduce((s,p)=>s+Number(p.cof||0),0)],
+      ['Débito Adicional Total',rows.reduce((s,p)=>s+Number(p.total||0),0)]
+    ];
+
+    const wb=XLSX.utils.book_new();
+    const wsProd=XLSX.utils.json_to_sheet(dados);
+    const wsResumo=XLSX.utils.aoa_to_sheet(resumo);
+
+    wsProd['!cols']=[
+      {wch:14},{wch:42},{wch:14},{wch:34},{wch:13},
+      {wch:18},{wch:20},{wch:22},{wch:22}
+    ];
+    wsResumo['!cols']=[{wch:28},{wch:34}];
+
+    if(wsProd['!ref']){
+      const range=XLSX.utils.decode_range(wsProd['!ref']);
+      for(let r=1;r<=range.e.r;r++){
+        for(let c=4;c<=8;c++){
+          const cell=wsProd[XLSX.utils.encode_cell({r:r,c:c})];
+          if(cell && typeof cell.v==='number'){
+            cell.z=c===4?'0.00':'R$ #,##0.00';
+          }
+        }
+      }
+    }
+
+    ['B8','B9','B10','B11'].forEach(function(addr){
+      if(wsResumo[addr] && typeof wsResumo[addr].v==='number'){
+        wsResumo[addr].z='R$ #,##0.00';
+      }
+    });
+
+    XLSX.utils.book_append_sheet(wb,wsProd,'Produtos LC 224');
+    XLSX.utils.book_append_sheet(wb,wsResumo,'Resumo');
+
+    const periodoNome=periodo==='all'?'Todos_Periodos':periodo.replace(/[^0-9A-Za-z_-]/g,'_');
+    const agora=new Date();
+    const dataNome=String(agora.getFullYear())+
+      String(agora.getMonth()+1).padStart(2,'0')+
+      String(agora.getDate()).padStart(2,'0');
+
+    XLSX.writeFile(wb,'Produtos_LC_224_2025_'+periodoNome+'_'+dataNome+'.xlsx');
+  }catch(e){
+    console.error('Erro ao exportar LC 224:',e);
+    alert('Não foi possível gerar o arquivo Excel.');
+  }
+}
+
 function renderLC224(){
   _initLC224Periods();
 
@@ -5705,6 +5805,20 @@ function renderLC224(){
   });
 
   prods.sort((a,b)=>b.venda-a.venda);
+
+  window._LC224_EXPORT_ROWS=prods.map(function(p){
+    return {
+      cod:p.cod,
+      nome:p.nome,
+      ncm:p.ncm,
+      grupo:p.grupo,
+      qty:p.qty,
+      venda:p.venda,
+      pis:p.pis,
+      cof:p.cof,
+      total:p.total
+    };
+  });
 
   const totItens=prods.length;
   const totVenda=prods.reduce((s,p)=>s+p.venda,0);
