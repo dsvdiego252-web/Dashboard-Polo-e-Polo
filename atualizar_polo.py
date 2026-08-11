@@ -771,12 +771,20 @@ if GIT_PUSH:
         except Exception as cex:
             print(f"ℹ️  Commit não criado ou sem alterações: {cex}")
         origin = repo.remote(name="origin")
-        # Sem --force: preserva histórico e evita sobrescrever alterações remotas
-        push_info = origin.push()
+        # Sem --force: preserva histórico e evita sobrescrever alterações remotas.
+        # Sempre envia para a branch "main" (independente do nome da branch local
+        # ativa no computador, ex: "master") - é dela que o Vercel publica o site.
+        GIT_BRANCH = "main"
+        push_info = origin.push(f"HEAD:{GIT_BRANCH}")
+        push_error = False
         for info in push_info:
             if info.flags & info.ERROR:
+                push_error = True
                 print(f"⚠️  Aviso no push: {info.summary}")
-        print("🚀 Push realizado com sucesso!")
+        if push_error:
+            print(f"⚠️  Push concluído com avisos - confira se os dados chegaram na branch '{GIT_BRANCH}' do GitHub.")
+        else:
+            print(f"🚀 Push realizado com sucesso para a branch '{GIT_BRANCH}'!")
     except ImportError:
         print("⚠️  gitpython não instalado. Instale com: pip install gitpython")
         print("   Rode manualmente: git add index.html dados/dashboard_dados.js && git commit -m 'atualiza dados' && git push")
