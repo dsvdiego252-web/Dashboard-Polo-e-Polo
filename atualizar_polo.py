@@ -356,6 +356,50 @@ def build_detail_en(df):
         ])
     return rows
 
+def build_seq_vendas(df):
+    """SEQ_VENDAS: detecta quebras de sequência no número do documento (num_doc) das vendas.
+    Retorna None se a coluna num_doc não existir na planilha de Saidas."""
+    if "num_doc" not in df.columns:
+        return None
+    by_num = {}
+    for _, r in df.iterrows():
+        try:
+            n = int(float(r["num_doc"]))
+        except (TypeError, ValueError):
+            continue
+        d = r["data_ent"]
+        if pd.isna(d):
+            continue
+        if n not in by_num or d < by_num[n][0]:
+            by_num[n] = (d, str(r["Periodo"]))
+    if not by_num:
+        return None
+    nums = sorted(by_num.keys())
+    gaps = []
+    for i in range(1, len(nums)):
+        prev, curr = nums[i - 1], nums[i]
+        if curr - prev > 1:
+            prev_date, _ = by_num[prev]
+            curr_date, curr_period = by_num[curr]
+            gaps.append({
+                "start": prev + 1,
+                "end": curr - 1,
+                "count": curr - prev - 1,
+                "prev_doc": prev,
+                "prev_date": fmt_date(prev_date),
+                "next_doc": curr,
+                "next_date": fmt_date(curr_date),
+                "period": curr_period,
+            })
+    return {
+        "total_docs": len(nums),
+        "min": nums[0],
+        "max": nums[-1],
+        "expected_total": nums[-1] - nums[0] + 1,
+        "missing_total": sum(g["count"] for g in gaps),
+        "gaps": gaps,
+    }
+
 # ── PROCESSAR SAIDAS ──────────────────────────────────────────────────────────
 print("⚙️  Processando saídas...")
 dates_s  = sorted(df_s["data_ent"].dt.date.unique())
@@ -372,7 +416,12 @@ GDAILY    = build_gdaily(df_s, dates_s)
 DETAIL_S  = build_detail_s(df_s)
 DETAIL_I  = build_detail_i(df_s)
 DETAIL_PS = build_detail_ps(df_s)
+SEQ_VENDAS = build_seq_vendas(df_s)
 N_DATES   = len(dates_s)
+if SEQ_VENDAS is None:
+    print("⚠️  Coluna 'num_doc' não encontrada na aba Saidas - conferência de sequência ficará vazia")
+else:
+    print(f"🔎 Conferência de sequência: {SEQ_VENDAS['total_docs']} documentos, {len(SEQ_VENDAS['gaps'])} quebra(s), {SEQ_VENDAS['missing_total']} faltante(s)")
 
 # ── PROCESSAR ENTRADAS ────────────────────────────────────────────────────────
 print("⚙️  Processando entradas...")
@@ -438,6 +487,7 @@ new_lines = {
     "DETAIL_PE":  f"const DETAIL_PE={j(DETAIL_PE)};",
     # Mesmo motivo do PRODS_PS: compatibilidade com funções antigas do HTML.
     "PRODS_PE":   "const PRODS_PE=PRODS_E;",
+    "SEQ_VENDAS": f"const SEQ_VENDAS={j(SEQ_VENDAS)};",
     "N_DATES":    f"const N_DATES={N_DATES},N_DATES_E={N_DATES_E};",
 }
 
@@ -462,6 +512,7 @@ DATA_ORDER = [
     "DETAIL_I","DETAIL_E","DETAIL_EN",
     "PRODS_PS","DATES_PS","PERIODS_PS","DETAIL_PS",
     "PRODS_PE","DATES_PE","PERIODS_PE","DETAIL_PE",
+    "SEQ_VENDAS",
     "N_DATES"
 ]
 
