@@ -357,14 +357,17 @@ def build_detail_en(df):
     return rows
 
 def build_seq_vendas(df):
-    """SEQ_VENDAS: detecta quebras de sequência no número do documento (num_doc) das vendas.
-    Retorna None se a coluna num_doc não existir na planilha de Saidas."""
-    if "num_doc" not in df.columns:
+    """SEQ_VENDAS: detecta quebras de sequência no número do documento das vendas.
+    Usa a coluna 'num_doc' se existir; senão cai para 'entrada' (já usada como
+    número do documento em DETAIL_S/DETAIL_I/DETAIL_PS). Retorna None se nenhuma
+    das duas existir ou não houver valores numéricos válidos."""
+    col = "num_doc" if "num_doc" in df.columns else ("entrada" if "entrada" in df.columns else None)
+    if col is None:
         return None
     by_num = {}
     for _, r in df.iterrows():
         try:
-            n = int(float(r["num_doc"]))
+            n = int(float(r[col]))
         except (TypeError, ValueError):
             continue
         d = r["data_ent"]
@@ -419,7 +422,7 @@ DETAIL_PS = build_detail_ps(df_s)
 SEQ_VENDAS = build_seq_vendas(df_s)
 N_DATES   = len(dates_s)
 if SEQ_VENDAS is None:
-    print("⚠️  Coluna 'num_doc' não encontrada na aba Saidas - conferência de sequência ficará vazia")
+    print("⚠️  Colunas 'num_doc'/'entrada' não encontradas na aba Saidas - conferência de sequência ficará vazia")
 else:
     print(f"🔎 Conferência de sequência: {SEQ_VENDAS['total_docs']} documentos, {len(SEQ_VENDAS['gaps'])} quebra(s), {SEQ_VENDAS['missing_total']} faltante(s)")
 
