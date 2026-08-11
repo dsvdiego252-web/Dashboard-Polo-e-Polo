@@ -4770,28 +4770,44 @@ function renderConferencia(){
   empty.style.display='none';
   content.style.display='block';
 
+  var period=(typeof sP!=='undefined'&&sP)?sP:'all';
+  var scoped=seq;
+  var gaps=seq.gaps;
+  var periodLabel='todos os períodos';
+  if(period!=='all'){
+    scoped=(seq.by_period&&seq.by_period[period])?seq.by_period[period]:{total_docs:0,min:0,max:0,expected_total:0,missing_total:0};
+    gaps=seq.gaps.filter(function(g){return g.period===period;});
+    var pp=period.split('-');
+    periodLabel=(typeof MES_COMPLETOS!=='undefined'?MES_COMPLETOS[parseInt(pp[1],10)]:pp[1])+'/'+pp[0];
+  }
+
   var fmtCnt=function(v){return (v||0).toLocaleString('pt-BR');};
-  document.getElementById('conf-total').textContent=fmtCnt(seq.total_docs);
-  document.getElementById('conf-range').textContent=seq.min+' – '+seq.max;
-  document.getElementById('conf-expected-s').textContent=fmtCnt(seq.expected_total)+' esperado(s) no intervalo';
-  document.getElementById('conf-gaps-count').textContent=fmtCnt(seq.gaps.length);
-  document.getElementById('conf-missing').textContent=fmtCnt(seq.missing_total);
+  document.getElementById('conf-total').textContent=fmtCnt(scoped.total_docs);
+  document.getElementById('conf-range').textContent=scoped.total_docs?(scoped.min+' – '+scoped.max):'—';
+  document.getElementById('conf-expected-s').textContent=fmtCnt(scoped.expected_total)+' esperado(s) no intervalo ('+periodLabel+')';
+  document.getElementById('conf-gaps-count').textContent=fmtCnt(gaps.length);
+  document.getElementById('conf-missing').textContent=fmtCnt(scoped.missing_total);
 
   var banner=document.getElementById('conf-banner');
-  if(seq.gaps.length===0){
+  if(!scoped.total_docs){
+    banner.style.background='rgba(232,184,75,.10)';
+    banner.style.borderColor='rgba(232,184,75,.4)';
+    banner.style.color='#e8b84b';
+    banner.textContent='ℹ️ Nenhum documento de venda encontrado em '+periodLabel+'.';
+  }else if(gaps.length===0){
     banner.style.background='rgba(46,204,113,.10)';
     banner.style.borderColor='rgba(46,204,113,.4)';
     banner.style.color='#2ecc71';
-    banner.textContent='✅ Nenhuma quebra de sequência encontrada nos documentos de venda ('+seq.min+' a '+seq.max+').';
+    banner.textContent='✅ Nenhuma quebra de sequência encontrada nos documentos de venda ('+periodLabel+', '+scoped.min+' a '+scoped.max+').';
   }else{
     banner.style.background='rgba(240,96,96,.10)';
     banner.style.borderColor='rgba(240,96,96,.4)';
     banner.style.color='#f06060';
-    banner.textContent='⚠️ '+seq.gaps.length+' quebra(s) de sequência encontrada(s), totalizando '+seq.missing_total+' documento(s) faltante(s).';
+    banner.textContent='⚠️ '+gaps.length+' quebra(s) de sequência encontrada(s) em '+periodLabel+', totalizando '+scoped.missing_total+' documento(s) faltante(s).';
   }
 
   var html='';
-  seq.gaps.forEach(function(g,i){
+  gaps.forEach(function(g,i){
     var bg=i%2===0?'':'background:var(--panel2)';
     var prevInfo=g.prev_doc!=null?(g.prev_doc+' ('+(g.prev_date||'—')+')'):'—';
     var nextInfo=g.next_doc!=null?(g.next_doc+' ('+(g.next_date||'—')+')'):'—';

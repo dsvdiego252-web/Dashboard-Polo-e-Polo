@@ -394,6 +394,22 @@ def build_seq_vendas(df):
                 "next_date": fmt_date(curr_date),
                 "period": curr_period,
             })
+    # Resumo por período (documentos datados naquele mês), para o filtro de
+    # período no dashboard não depender de recalcular a sequência no navegador.
+    by_period = {}
+    for n, (_, p) in by_num.items():
+        bp = by_period.setdefault(p, {"nums": []})
+        bp["nums"].append(n)
+    for p, bp in by_period.items():
+        pnums = sorted(bp["nums"])
+        pgaps = [g for g in gaps if g["period"] == p]
+        by_period[p] = {
+            "total_docs": len(pnums),
+            "min": pnums[0],
+            "max": pnums[-1],
+            "expected_total": pnums[-1] - pnums[0] + 1,
+            "missing_total": sum(g["count"] for g in pgaps),
+        }
     return {
         "total_docs": len(nums),
         "min": nums[0],
@@ -401,6 +417,7 @@ def build_seq_vendas(df):
         "expected_total": nums[-1] - nums[0] + 1,
         "missing_total": sum(g["count"] for g in gaps),
         "gaps": gaps,
+        "by_period": by_period,
     }
 
 # ── PROCESSAR SAIDAS ──────────────────────────────────────────────────────────
