@@ -19,8 +19,26 @@ if errorlevel 1 (
     exit /b 1
 )
 
+:: ── Atualizar código do projeto ───────────────────────────────────────────────
+echo [1/5] Atualizando codigo do projeto...
+git fetch origin >nul 2>&1
+git pull --ff-only >nul 2>&1
+if errorlevel 1 (
+    echo [INFO] Sincronizando pasta local com o repositorio...
+    git reset --hard origin/main >nul 2>&1
+    if errorlevel 1 (
+        echo [AVISO] Nao foi possivel atualizar o codigo automaticamente.
+        echo         Prosseguindo com a versao ja existente nesta pasta.
+    ) else (
+        echo [OK] Codigo do projeto sincronizado com o GitHub.
+    )
+) else (
+    echo [OK] Codigo do projeto atualizado.
+)
+echo.
+
 :: ── Detectar Python disponível ───────────────────────────────────────────────
-echo [1/4] Detectando Python...
+echo [2/5] Detectando Python...
 set "PYTHON="
 
 :: Tenta Anaconda base
@@ -58,7 +76,7 @@ echo [OK] Python encontrado: %PYTHON%
 echo.
 
 :: ── Verificar dependências ────────────────────────────────────────────────────
-echo [2/4] Verificando dependencias Python...
+echo [3/5] Verificando dependencias Python...
 %PYTHON% -c "import pandas, openpyxl, git" >nul 2>&1
 if errorlevel 1 (
     echo [INFO] Instalando dependencias necessarias...
@@ -74,7 +92,7 @@ if errorlevel 1 (
 echo.
 
 :: ── Executar script Python ────────────────────────────────────────────────────
-echo [3/4] Atualizando dados do dashboard...
+echo [4/5] Atualizando dados do dashboard...
 echo.
 %PYTHON% atualizar_polo.py
 if errorlevel 1 (
@@ -87,7 +105,7 @@ if errorlevel 1 (
 
 :: ── Git push (feito pelo Python, mas confirmar) ───────────────────────────────
 echo.
-echo [4/4] Verificando envio para o servidor...
+echo [5/5] Verificando envio para o servidor...
 git status --short >nul 2>&1
 if errorlevel 1 (
     echo [AVISO] Git nao encontrado ou nao inicializado.
