@@ -20,20 +20,22 @@ if errorlevel 1 (
 )
 
 :: ── Atualizar código do projeto ───────────────────────────────────────────────
+:: Sempre sincroniza com origin/main de forma explicita (fetch + reset --hard),
+:: sem depender de "git pull" ou de qual branch local esta ativa/configurada -
+:: isso evita cair em branches locais desatualizadas (ex: "master").
 echo [1/5] Atualizando codigo do projeto...
-git fetch origin >nul 2>&1
-git pull --ff-only >nul 2>&1
+git fetch origin main
 if errorlevel 1 (
-    echo [INFO] Sincronizando pasta local com o repositorio...
-    git reset --hard origin/main >nul 2>&1
+    echo [AVISO] Nao foi possivel conectar ao GitHub agora.
+    echo         Prosseguindo com a versao ja existente nesta pasta.
+) else (
+    git reset --hard origin/main
     if errorlevel 1 (
-        echo [AVISO] Nao foi possivel atualizar o codigo automaticamente.
+        echo [AVISO] Nao foi possivel sincronizar o codigo automaticamente.
         echo         Prosseguindo com a versao ja existente nesta pasta.
     ) else (
-        echo [OK] Codigo do projeto sincronizado com o GitHub.
+        echo [OK] Codigo do projeto atualizado.
     )
-) else (
-    echo [OK] Codigo do projeto atualizado.
 )
 echo.
 
