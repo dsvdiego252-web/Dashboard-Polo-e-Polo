@@ -91,24 +91,26 @@ df_e = pd.read_excel(PLANILHA, sheet_name="Entradas")
 # Normalizar datas
 df_s["data_ent"] = pd.to_datetime(df_s["data_ent"])
 df_e["data_ent"] = pd.to_datetime(df_e["data_ent"])
-df_s["Periodo"]  = pd.to_datetime(df_s["Periodo"]).dt.to_period("M").astype(str)
-df_e["Periodo"]  = pd.to_datetime(df_e["Periodo"]).dt.to_period("M").astype(str)
+# "Periodo" é derivado direto de "data_ent" (não de uma coluna/fórmula separada
+# na planilha, que já se mostrou frágil e gerou período "1970-01" em um mês em
+# que "data_ent" estava correta).
+df_s["Periodo"]  = df_s["data_ent"].dt.to_period("M").astype(str)
+df_e["Periodo"]  = df_e["data_ent"].dt.to_period("M").astype(str)
 
 # ── SANIDADE DAS DATAS ───────────────────────────────────────────────────────
-# Uma célula em branco/zerada nas colunas "data_ent"/"Periodo" da planilha vira
+# Uma célula em branco/zerada na coluna "data_ent" da planilha vira
 # silenciosamente 01/01/1970 (época Unix) no pandas, em vez de dar erro. Sem
 # essa checagem, esse lixo seria publicado no dashboard (ex: filtro de período
 # mostrando "Jan 1970"). Aborta ANTES de gerar/commitar/publicar qualquer coisa.
 def _checar_datas(df, nome_aba):
     ano_data = df["data_ent"].dt.year
-    ano_periodo = df["Periodo"].str.slice(0, 4).astype(float)
-    ruim = ano_data.isna() | (ano_data < 2000) | ano_periodo.isna() | (ano_periodo < 2000)
+    ruim = ano_data.isna() | (ano_data < 2000)
     n_ruim = int(ruim.sum())
     if n_ruim:
         pct = n_ruim / len(df) * 100
         print(f"\n❌ ERRO: {n_ruim} linha(s) ({pct:.0f}%) na aba '{nome_aba}' com data inválida "
-              f"(ex: 01/01/1970 ou em branco) nas colunas 'data_ent'/'Periodo'.")
-        print("   Isso costuma acontecer quando uma célula dessas colunas ficou vazia ou com")
+              f"(ex: 01/01/1970 ou em branco) na coluna 'data_ent'.")
+        print("   Isso costuma acontecer quando uma célula dessa coluna ficou vazia ou com")
         print("   fórmula quebrada em Resumo_Farmacia_Polo_e_Polo.xlsx - comum depois de")
         print("   adicionar um mês novo na planilha. Corrija a planilha e rode de novo.")
         print("   Nada foi publicado, para não sobrescrever o dashboard com dado errado.")
