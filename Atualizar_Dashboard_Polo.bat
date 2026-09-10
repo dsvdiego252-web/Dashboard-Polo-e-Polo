@@ -8,13 +8,16 @@ echo ============================================================
 echo.
 
 :: ── Diretório do projeto ─────────────────────────────────────────────────────
-set "PROJETO=C:\Users\TI\OneDrive\Trabalho\Vital Contabilidade\Farmacia Polo e Polo"
-cd /d "%PROJETO%"
-if errorlevel 1 (
-    echo [ERRO] Pasta do projeto nao encontrada:
-    echo        %PROJETO%
+:: Usa a pasta onde ESTE ARQUIVO .bat está fisicamente salvo, em vez de um
+:: caminho fixo. Assim funciona em qualquer computador/usuario sem precisar
+:: editar nada aqui - e evita que o auto-atualizador (git reset --hard mais
+:: abaixo) sobrescreva o caminho de um computador com o de outro.
+cd /d "%~dp0"
+if not exist "atualizar_polo.py" (
+    echo [ERRO] Nao encontrei atualizar_polo.py nesta pasta:
+    echo        %~dp0
     echo.
-    echo Verifique se o OneDrive esta sincronizado e o caminho esta correto.
+    echo Verifique se este arquivo .bat esta salvo dentro da pasta correta do projeto.
     pause
     exit /b 1
 )
@@ -43,9 +46,9 @@ echo.
 echo [2/5] Detectando Python...
 set "PYTHON="
 
-:: Tenta Anaconda base
-if exist "C:\Users\TI\anaconda3\python.exe" (
-    set "PYTHON=C:\Users\TI\anaconda3\python.exe"
+:: Tenta Anaconda base (na pasta do usuário atual, funciona em qualquer PC)
+if exist "%USERPROFILE%\anaconda3\python.exe" (
+    set "PYTHON=%USERPROFILE%\anaconda3\python.exe"
     goto :python_found
 )
 :: Tenta Anaconda3 em AppData
